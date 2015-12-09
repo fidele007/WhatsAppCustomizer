@@ -1,7 +1,7 @@
 Package: com.fidele007.whatsappcustomizer
 Name: WhatsAppCustomizer
 Depends: mobilesubstrate
-Version: 0.0.1
+Version: 1.2
 Architecture: iphoneos-arm
 Description: An awesome MobileSubstrate tweak!
 Maintainer: fidele007 <kforcefidele@yahoo.com>
