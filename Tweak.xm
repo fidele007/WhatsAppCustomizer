@@ -108,12 +108,14 @@
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
 		NSString *statusBarBackgroundColor = [settings objectForKey:@"statusBarBackgroundColor"];
-		if (statusBarBackgroundColor) {
+		if (![statusBarBackgroundColor isEqualToString:@"#FFFFFF:0"]) {
 			arg2 = LCPParseColorString(statusBarBackgroundColor, @"#FFFFFF:0");
 		}
 		
 		NSString *statusBarForegroundColor = [settings objectForKey:@"statusBarForegroundColor"];
-		arg3 = LCPParseColorString(statusBarForegroundColor, @"#000000");
+		if (![statusBarForegroundColor isEqualToString:@"#000000:1"]) {
+			arg3 = LCPParseColorString(statusBarForegroundColor, @"#000000");
+		}
 	}
 	return %orig;
 }
