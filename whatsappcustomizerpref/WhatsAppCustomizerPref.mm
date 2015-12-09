@@ -21,7 +21,7 @@
 - (id)specifiers {
 	if(_specifiers == nil) {
 		_specifiers = [[self loadSpecifiersFromPlistName:@"WhatsAppCustomizerPref" target:self] retain];
-		UIBarButtonItem *saveChangesButton = [[UIBarButtonItem alloc] initWithTitle:@"Save Changes" style:UIBarButtonItemStylePlain target:self action:@selector(saveChangesButtonClicked:)];
+		UIBarButtonItem *saveChangesButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveChangesButtonClicked:)];
 	    [[self navigationItem] setRightBarButtonItem:saveChangesButton animated:YES];
 	    [saveChangesButton release];
 	}
@@ -29,8 +29,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-	[self clearCache];
-	[self reload];
+	// [self clearCache];
+	// [self reload];
 	[super viewWillAppear:animated];
 	settingsView = [[UIApplication sharedApplication] keyWindow];
 	settingsView.tintColor = [UIColor cyanColor];
@@ -40,6 +40,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
+	settingsView = [[UIApplication sharedApplication] keyWindow];
 	settingsView.tintColor = nil;
 	self.navigationController.navigationController.navigationBar.barTintColor = nil;
 	// [[UIApplication sharedApplication] setStatusBarStyle:nil];
@@ -48,17 +49,35 @@
 -(void)saveChangesButtonClicked:(id)sender {
 	[self.view endEditing:YES];
 	system("killall -9 WhatsApp");
+	UIAlertView *savedAlert = [[UIAlertView alloc] initWithTitle:@"Settings" message:@"Your settings have been saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+	[savedAlert show];
+	[savedAlert release];
 }
 
 -(void)launchWhatsApp {
 	[[UIApplication sharedApplication] launchApplicationWithIdentifier:@"net.whatsapp.WhatsApp" suspended:NO];
 }
 
+-(id)readPreferenceValue:(PSSpecifier*)specifier {
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
+	if (!settings[specifier.properties[@"key"]]) {
+		return specifier.properties[@"default"];
+	}
+	return settings[specifier.properties[@"key"]];
+}
+
+-(void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
+	NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
+	[defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE]];
+	[defaults setObject:value forKey:specifier.properties[@"key"]];
+	[defaults writeToFile:SETTINGS_FILE atomically:YES];
+}
+
 // -(void)resetPreferences {
 // 	if (self) {
 // 		for (PSSpecifier *specifier in [self specifiers]) {
-// 			if ([specifier propertyForKey:@"color_key"]) {
-// 				[self setPreferenceValue:[specifier propertyForKey:@"color_fallback"] specifier:specifier];
+// 			if ([specifier propertyForKey:@"key"]) {
+// 				[self setPreferenceValue:[specifier propertyForKey:@"fallback"] specifier:specifier];
 // 			}
 // 		}
 // 		[self reloadSpecifiers];
@@ -93,16 +112,24 @@
 	[settings setObject:@"#D0E9FB:1" forKey:@"eventTextBubbleColor"];
 	[settings setObject:@"#000000:1" forKey:@"eventTextColor"];
 
+	[settings setObject:@"#007CFF:1" forKey:@"tintColor"];
+	[settings setObject:@"#F7F7F7:1" forKey:@"navbarBackgroundColor"];
+	[settings setObject:@"#000000:1" forKey:@"navbarTitleColor"];
+	[settings setObject:@"#FFFFFF:0" forKey:@"statusBarBackgroundColor"];
+	[settings setObject:@"#000000:1" forKey:@"statusBarForegroundColor"];
+
+	[settings setObject:@"#F7F7F7:1" forKey:@"toolbarBackgroundColor"];
+	[settings setObject:@"#007CFF:1" forKey:@"toolbarItemColor"];
+
 	[settings setObject:@"" forKey:@"chatFontSize"];
 	
 	if ([settings writeToFile:SETTINGS_FILE atomically:YES]) {
 		[self reloadSpecifiers];
+		system("killall -9 WhatsApp");
+		UIAlertView *resetAlert = [[UIAlertView alloc] initWithTitle:@"Settings" message:@"Your settings have been reset to defaults." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[resetAlert show];
+		[resetAlert release];
 	}
-
-
-	// if ([fileManager removeItemAtPath:SETTINGS_FILE error:NULL]) {
-	// 	[self reloadSpecifiers];
-	// }
 }
 
 -(void)twitter {
