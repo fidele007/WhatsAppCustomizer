@@ -1,0 +1,10 @@
+{
+    entry = {
+	bundle = WhatsAppCustomizerPref;
+	cell = PSLinkCell;
+	detail = WhatsAppCustomizerPrefListController;
+	icon = WhatsAppCustomizerPref.png;
+	isController = 1;
+	label = WhatsAppCustomizer;
+    };
+}
