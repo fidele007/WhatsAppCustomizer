@@ -1,20 +1,23 @@
 #import "common.h"
 #import <libcolorpicker.h>
-#include <UIKit/UIApplication2.h>
 
 #define SETTINGS_FILE @"/var/mobile/Library/Preferences/com.fidele007.whatsappcustomizerpref.plist"
 
-@interface WhatsAppCustomizerPrefListController: PSListController {
-	UIWindow *settingsView;
-}
+@interface UIApplication (WhatsAppCustomizer)
+- (BOOL)launchApplicationWithIdentifier:(id)arg1 suspended:(BOOL)arg2 ;
 @end
 
 @interface PSListController ()
--(void)clearCache;
--(void)reload;
--(void)viewWillAppear:(BOOL)animated;
--(void)reloadSpecifiers;
--(void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier;
+- (void)clearCache;
+- (void)reload;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)reloadSpecifiers;
+- (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier;
+@end
+
+@interface WhatsAppCustomizerPrefListController: PSListController {
+  UIWindow *settingsView;
+}
 @end
 
 @implementation WhatsAppCustomizerPrefListController
@@ -28,25 +31,21 @@
 	return _specifiers;
 }
 
--(void)viewWillAppear:(BOOL)animated {
-	// [self clearCache];
-	// [self reload];
+- (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	settingsView = [[UIApplication sharedApplication] keyWindow];
 	settingsView.tintColor = [UIColor cyanColor];
 	self.navigationController.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.031 green:0.467 blue:0.482 alpha:1];
-	// [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
--(void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	settingsView = [[UIApplication sharedApplication] keyWindow];
 	settingsView.tintColor = nil;
 	self.navigationController.navigationController.navigationBar.barTintColor = nil;
-	// [[UIApplication sharedApplication] setStatusBarStyle:nil];
 }
 
--(void)saveChangesButtonClicked:(id)sender {
+- (void)saveChangesButtonClicked:(id)sender {
 	[self.view endEditing:YES];
 	system("killall -9 WhatsApp");
 	UIAlertView *savedAlert = [[UIAlertView alloc] initWithTitle:@"Settings" message:@"Your settings have been saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -54,11 +53,11 @@
 	[savedAlert release];
 }
 
--(void)launchWhatsApp {
+- (void)launchWhatsApp {
 	[[UIApplication sharedApplication] launchApplicationWithIdentifier:@"net.whatsapp.WhatsApp" suspended:NO];
 }
 
--(id)readPreferenceValue:(PSSpecifier*)specifier {
+- (id)readPreferenceValue:(PSSpecifier*)specifier {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	if (!settings[specifier.properties[@"key"]]) {
 		return specifier.properties[@"default"];
@@ -66,25 +65,14 @@
 	return settings[specifier.properties[@"key"]];
 }
 
--(void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
+- (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
 	NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
 	[defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE]];
 	[defaults setObject:value forKey:specifier.properties[@"key"]];
 	[defaults writeToFile:SETTINGS_FILE atomically:YES];
 }
 
-// -(void)resetPreferences {
-// 	if (self) {
-// 		for (PSSpecifier *specifier in [self specifiers]) {
-// 			if ([specifier propertyForKey:@"key"]) {
-// 				[self setPreferenceValue:[specifier propertyForKey:@"fallback"] specifier:specifier];
-// 			}
-// 		}
-// 		[self reloadSpecifiers];
-// 	}
-// }
-
--(void)resetPreferences {
+- (void)resetPreferences {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSMutableDictionary *settings;
 	if ([fileManager fileExistsAtPath:SETTINGS_FILE]) {
@@ -132,7 +120,7 @@
 	}
 }
 
--(void)twitter {
+- (void)twitter {
     if ([[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"tweetbot:"]]) {
         [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"tweetbot:///user_profile/kienforcefidele"]];
     } else if ([[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"tweetings:"]]) {
@@ -144,11 +132,11 @@
     }
 }
 
--(void)donate {
+- (void)donate {
 	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://www.paypal.me/fidele007/"]];
 }
 
--(void)seeSourceCode {
+- (void)seeSourceCode {
 	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://github.com/fidele007/whatsapp-customizer"]];
 }
 @end
@@ -166,7 +154,7 @@
 @end
 
 @implementation WhatsAppCustomizerCell
--(id)initWithSpecifier:(PSSpecifier *)specifier {
+- (id)initWithSpecifier:(PSSpecifier *)specifier {
 	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell" specifier:specifier];
 	if (self) {
 		int width = [[UIScreen mainScreen] bounds].size.width;
@@ -211,7 +199,7 @@
 	return self;
 }
  
--(CGFloat)preferredHeightForWidth:(double)arg1 inTableView:(id)arg2 {
+- (CGFloat)preferredHeightForWidth:(double)arg1 inTableView:(id)arg2 {
 	return 80.0;
 }
 

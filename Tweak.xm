@@ -1,97 +1,10 @@
 #include <libcolorpicker.h>
-
-@interface WALabel : UILabel
-@end
-
-@interface TextMessage
-@property (nonatomic,retain) UIColor * textColor;
-@property (nonatomic,retain) UIColor * urlColor;
-@end
-
-@interface _TextMessage_TextKit : TextMessage
-@end
-
-@interface WAChatCellData : NSObject
-@property (nonatomic,readonly) BOOL isFromMe;
-@property (nonatomic,retain) NSArray * textMessages;
-@property (nonatomic,readonly) unsigned long long footerStatus; 
-@end
-
-@interface WAMessageCell : UITableViewCell
-@property (nonatomic,readonly) WAChatCellData * cellData;
-@property (nonatomic,retain) UIImageView * bubbleImageView;
-@property (nonatomic,readonly) UIView * bubbleView;
-@property (nonatomic,readonly) UILabel * fromNameLabel; 
-@end
-
-@interface WATextMessageCell : WAMessageCell
-@end
-
-@interface WAMessageTextView : UIView
-@end
-
-@interface WAMessageFooterView : UIView
-@property (nonatomic,readonly) unsigned long long status;
-@end
-
-@interface WABubbleView : UIView
-@property (nonatomic,readonly) WAMessageFooterView * messageStatusView;
-@end
-
-@interface WAInstantVoiceBubbleView : WABubbleView
-@end
-
-@interface WAGroupEventMessageCell : WAMessageCell
-@end
-
-@interface WALargeMediaMessageCell : WAMessageCell
-@property (nonatomic,readonly) UIImageView * lowerRightShadowView;
-@property (nonatomic,readonly) WAMessageFooterView * footerView;
-@end
-
-@interface _WANoBlurNavigationBar : UINavigationBar
-@end
-
-@interface WAConversationHeaderView : UIView
-@end
-
-@interface WAChatBar : UIView
-@property (nonatomic,readonly) UIButton * sendButton;
-@property (nonatomic,readonly) UIButton * attachMediaButton;
-@property (nonatomic,readonly) UIButton * cameraButton;
-@property (nonatomic,readonly) UIButton * pttButton;
-@end
-
-@interface WATabBarController : UITabBarController
-@end
-
-@interface ContactsViewController
-@property (nonatomic,retain) UITableView * tableView;
-@end
-
-@interface ContactTableViewCell : UITableViewCell
-@end
-
-@interface WAContactInfoTableViewCell : UITableViewCell
-@end
-
-@interface WAProfilePictureThumbnailView : UIImageView
-@end
-
-@interface WAChatSessionCell : UITableViewCell
-@end
-
-@interface _WAChatSessionCellModern : WAChatSessionCell
-@end
-
-@interface WhatsAppAppDelegate : NSObject
-@property (nonatomic,retain) UIWindow * window;
-@end
+#include <Headers.h>
 
 #define SETTINGS_FILE @"/var/mobile/Library/Preferences/com.fidele007.whatsappcustomizerpref.plist"
 
 %hook WhatsAppAppDelegate
--(void)setWindow:(UIWindow *)arg1 {
+- (void)setWindow:(UIWindow *)arg1 {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
@@ -103,7 +16,7 @@
 %end
 
 %hook UIStatusBarNewUIStyleAttributes
--(id)initWithRequest:(id)arg1 backgroundColor:(id)arg2 foregroundColor:(id)arg3 {
+- (id)initWithRequest:(id)arg1 backgroundColor:(id)arg2 foregroundColor:(id)arg3 {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
@@ -123,7 +36,7 @@
 
 %hook WATheme
 // Set font size in Chat
--(void)setFontSize:(double)arg1 {
+- (void)setFontSize:(double)arg1 {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
@@ -134,7 +47,7 @@
 	%orig(arg1);
 }
 
--(UIColor *)tintColor {
+- (UIColor *)tintColor {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
@@ -146,7 +59,7 @@
 %end
 
 %hook ContactsViewController
--(void)viewWillAppear:(BOOL)arg1 {
+- (void)viewWillAppear:(BOOL)arg1 {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
@@ -158,7 +71,7 @@
 %end
 
 %hook ContactTableViewCell
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
@@ -170,7 +83,7 @@
 %end
 
 %hook WAContactInfoTableViewCell
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
@@ -179,7 +92,7 @@
 		self.tintColor = LCPParseColorString(tintColor, @"#007CFF");
 	}
 }
--(UILabel *)valueLabel {
+- (UILabel *)valueLabel {
 	if (%orig) {
 		NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 		BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
@@ -197,7 +110,7 @@
 %end
 
 %hook _WANoBlurNavigationBar
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
@@ -209,17 +122,15 @@
 		NSString *navbarTitleColor = [settings objectForKey:@"navbarTitleColor"];
 		self.titleTextAttributes = [NSDictionary dictionaryWithObject:LCPParseColorString(navbarTitleColor, @"#000000") forKey:NSForegroundColorAttributeName];
 		// Set navigation bar background color
-		// if (&MSHookIvar<UIView *>(self, "_grayBackgroundView")) {
-			NSString *navbarBackgroundColor = [settings objectForKey:@"navbarBackgroundColor"];
-			MSHookIvar<UIView *>(self, "_grayBackgroundView").backgroundColor = LCPParseColorString(navbarBackgroundColor, @"#F7F7F7");
-		// }
+		NSString *navbarBackgroundColor = [settings objectForKey:@"navbarBackgroundColor"];
+		MSHookIvar<UIView *>(self, "_grayBackgroundView").backgroundColor = LCPParseColorString(navbarBackgroundColor, @"#F7F7F7");
 	}
 }
 %end
 
 // Tint tab bar
 %hook WATabBarController
--(void)viewWillAppear:(BOOL)arg1 {
+- (void)viewWillAppear:(BOOL)arg1 {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
@@ -232,7 +143,7 @@
 
 // Tint all buttons
 %hook WAChatListHeaderCell
--(UIButton *)broadcastButton {
+- (UIButton *)broadcastButton {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (%orig && enabledWhatsAppCustomizer) {
@@ -243,7 +154,7 @@
 	}
 	return %orig;
 }
--(UIButton *)groupButton {
+- (UIButton *)groupButton {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (%orig && enabledWhatsAppCustomizer) {
@@ -258,7 +169,7 @@
 
 // Set title and caption label color
 %hook WAConversationHeaderView
--(WALabel *)titleLabel {
+- (WALabel *)titleLabel {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (%orig && enabledWhatsAppCustomizer) {
@@ -269,7 +180,7 @@
 	}
 	return %orig;
 }
--(UILabel *)captionLabel {
+- (UILabel *)captionLabel {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (%orig && enabledWhatsAppCustomizer) {
@@ -283,7 +194,7 @@
 %end
 
 %hook WAChatBar
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
@@ -299,48 +210,35 @@
 		self.pttButton.tintColor = LCPParseColorString(toolbarItemColor, @"#007CFF");
 		self.sendButton.tintColor = LCPParseColorString(toolbarItemColor, @"#007CFF");
 		// Set color for PPT items
-		// if (&MSHookIvar<UIImageView *>(self, "_pttMic")) {
-			MSHookIvar<UIImageView *>(self, "_pttMic").tintColor = LCPParseColorString(toolbarItemColor, @"#000000");
-		// }
-		// if (&MSHookIvar<UIImageView *>(self, "_pttMicInactive")) {
-			MSHookIvar<UIImageView *>(self, "_pttMicInactive").tintColor = LCPParseColorString(toolbarItemColor, @"#007CFF");
-		// }
-		// if (&MSHookIvar<UILabel *>(self, "_pttRecordingProgressLabel")) {
-			MSHookIvar<UILabel *>(self, "_pttRecordingProgressLabel").textColor = LCPParseColorString(toolbarItemColor, @"#000000");
-		// }
-		// if (&MSHookIvar<UIImageView *>(self, "_pttBucket")) {
-			MSHookIvar<UIImageView *>(self, "_pttBucket").tintColor = LCPParseColorString(toolbarItemColor, @"#000000");
-		// }
-		// if (&MSHookIvar<UIImageView *>(self, "_pttBucketLid")) {
-			MSHookIvar<UIImageView *>(self, "_pttBucketLid").tintColor = LCPParseColorString(toolbarItemColor, @"#000000");
-		// }
+		MSHookIvar<UIImageView *>(self, "_pttMic").tintColor = LCPParseColorString(toolbarItemColor, @"#000000");
+		MSHookIvar<UIImageView *>(self, "_pttMicInactive").tintColor = LCPParseColorString(toolbarItemColor, @"#007CFF");
+		MSHookIvar<UILabel *>(self, "_pttRecordingProgressLabel").textColor = LCPParseColorString(toolbarItemColor, @"#000000");
+		MSHookIvar<UIImageView *>(self, "_pttBucket").tintColor = LCPParseColorString(toolbarItemColor, @"#000000");
+		MSHookIvar<UIImageView *>(self, "_pttBucketLid").tintColor = LCPParseColorString(toolbarItemColor, @"#000000");
 	}
 }
 %end
 
 // Set color for PPT Cancel label and arrow
 %hook WAAnimatedCancelLabel
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
 		NSString *toolbarItemColor = [settings objectForKey:@"toolbarItemColor"];
-		// if (&MSHookIvar<UILabel *>(self, "_label")) {
-			UILabel *cancelLabel = MSHookIvar<UILabel *>(self, "_label");
-			cancelLabel.textColor = LCPParseColorString(toolbarItemColor, @"#000000");
-		// }
-		// if (&MSHookIvar<UIImageView *>(self, "_slideArrow")) {
-			UIImageView *slideArrow = MSHookIvar<UIImageView *>(self, "_slideArrow");
-			slideArrow.tintColor = LCPParseColorString(toolbarItemColor, @"#000000");
-		// }
+		UILabel *cancelLabel = MSHookIvar<UILabel *>(self, "_label");
+		cancelLabel.textColor = LCPParseColorString(toolbarItemColor, @"#000000");
+
+		UIImageView *slideArrow = MSHookIvar<UIImageView *>(self, "_slideArrow");
+		slideArrow.tintColor = LCPParseColorString(toolbarItemColor, @"#000000");
 	}
 }
 %end
 
 // Normal bubble image view
 %hook WAMessageCell
--(UIImageView *)bubbleImageView {
+- (UIImageView *)bubbleImageView {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
@@ -369,50 +267,46 @@
 	}
 	return %orig;
 }
+
 // WAInstantVoiceBubbleView
--(UIView *)bubbleView {
-	// NSLog(@"---FIDELE007---BUBBLE VIEW: %@", %orig);
+- (UIView *)bubbleView {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
 		// Get instance voice bubble image
-		// if (&MSHookIvar<UIImageView *>(self, "_imageViewBubble")) {
-			UIImageView *instantVoiceBubbleImageView = MSHookIvar<UIImageView *>(self, "_imageViewBubble");
-			instantVoiceBubbleImageView.image = [instantVoiceBubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-			if (self.cellData.isFromMe) {
-				// Set your instant voice bubble color
-				NSString *yourInstantVoiceBubbleColor = [settings objectForKey:@"yourInstantVoiceBubbleColor"];
-				[instantVoiceBubbleImageView setTintColor:LCPParseColorString(yourInstantVoiceBubbleColor, @"#DCF8C6")];
-			} else {
-				// Set other person instant voice bubble color
-				NSString *otherPersonInstantVoiceBubbleColor = [settings objectForKey:@"otherPersonInstantVoiceBubbleColor"];
-				[instantVoiceBubbleImageView setTintColor:LCPParseColorString(otherPersonInstantVoiceBubbleColor, @"#FAFAFA")];
-			}
+		UIImageView *instantVoiceBubbleImageView = MSHookIvar<UIImageView *>(self, "_imageViewBubble");
+		instantVoiceBubbleImageView.image = [instantVoiceBubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		if (self.cellData.isFromMe) {
+			// Set your instant voice bubble color
+			NSString *yourInstantVoiceBubbleColor = [settings objectForKey:@"yourInstantVoiceBubbleColor"];
+			[instantVoiceBubbleImageView setTintColor:LCPParseColorString(yourInstantVoiceBubbleColor, @"#DCF8C6")];
+		} else {
+			// Set other person instant voice bubble color
+			NSString *otherPersonInstantVoiceBubbleColor = [settings objectForKey:@"otherPersonInstantVoiceBubbleColor"];
+			[instantVoiceBubbleImageView setTintColor:LCPParseColorString(otherPersonInstantVoiceBubbleColor, @"#FAFAFA")];
+		}
 
-			if (%orig) {
-				// Get time stamp label
-				UIView *originalView = %orig;
-				WAInstantVoiceBubbleView *instantVoiceBubbleView = (WAInstantVoiceBubbleView *) originalView;
-				WAMessageFooterView *messageFooterView = instantVoiceBubbleView.messageStatusView;
-				// if (&MSHookIvar<UILabel *>(messageFooterView, "_timestampLabel")) {
-					UILabel *timeStampLabel = MSHookIvar<UILabel *>(messageFooterView, "_timestampLabel");
-					if (self.cellData.isFromMe) {
-						// Set time stamp label color
-						NSString *yourTimeStampLabelColor = [settings objectForKey:@"yourTimeStampLabelColor"];
-						[timeStampLabel setTextColor:LCPParseColorString(yourTimeStampLabelColor, @"#D3D3D3")];
-					} else {
-						// Set time stamp label color
-						NSString *otherPersonTimeStampLabelColor = [settings objectForKey:@"otherPersonTimeStampLabelColor"];
-						[timeStampLabel setTextColor:LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3")];
-					}
-				// }
+		if (%orig) {
+			// Get time stamp label
+			UIView *originalView = %orig;
+			WAInstantVoiceBubbleView *instantVoiceBubbleView = (WAInstantVoiceBubbleView *) originalView;
+			WAMessageFooterView *messageFooterView = instantVoiceBubbleView.messageStatusView;
+			UILabel *timeStampLabel = MSHookIvar<UILabel *>(messageFooterView, "_timestampLabel");
+			if (self.cellData.isFromMe) {
+				// Set time stamp label color
+				NSString *yourTimeStampLabelColor = [settings objectForKey:@"yourTimeStampLabelColor"];
+				[timeStampLabel setTextColor:LCPParseColorString(yourTimeStampLabelColor, @"#D3D3D3")];
+			} else {
+				// Set time stamp label color
+				NSString *otherPersonTimeStampLabelColor = [settings objectForKey:@"otherPersonTimeStampLabelColor"];
+				[timeStampLabel setTextColor:LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3")];
 			}
-		// }
+		}
 	}
 	return %orig;
 }
 
--(WAMessageFooterView *)footerView {
+- (WAMessageFooterView *)footerView {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
@@ -432,7 +326,7 @@
 	return %orig;
 }
 
--(UILabel *)fromNameLabel {
+- (UILabel *)fromNameLabel {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
@@ -448,7 +342,7 @@
 %end
 
 %hook WAChatCellData
--(NSArray *)textMessages {
+- (NSArray *)textMessages {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
@@ -475,24 +369,20 @@
 
 // Set date bubble view and date label color
 %hook WADateBubbleView
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
 		// Set date bubble color
-		// if (&MSHookIvar<UIImageView *>(self, "_backgroundView")) {
-			UIImageView *bubbleImageView = MSHookIvar<UIImageView *>(self, "_backgroundView");
-			bubbleImageView.image = [bubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-			NSString *dateBubbleColor = [settings objectForKey:@"dateBubbleColor"];
-			[bubbleImageView setTintColor:LCPParseColorString(dateBubbleColor, @"#D7DCF0")];
-		// }
+		UIImageView *bubbleImageView = MSHookIvar<UIImageView *>(self, "_backgroundView");
+		bubbleImageView.image = [bubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		NSString *dateBubbleColor = [settings objectForKey:@"dateBubbleColor"];
+		[bubbleImageView setTintColor:LCPParseColorString(dateBubbleColor, @"#D7DCF0")];
 		
 		// Set date label color
-		// if (&MSHookIvar<UILabel *>(self, "_titleLabel")) {
-			UILabel *dateLabel = MSHookIvar<UILabel *>(self, "_titleLabel");
-			NSString *dateLabelColor = [settings objectForKey:@"dateLabelColor"];
-			[dateLabel setTextColor:LCPParseColorString(dateLabelColor, @"#000000")];
-		// }
+		UILabel *dateLabel = MSHookIvar<UILabel *>(self, "_titleLabel");
+		NSString *dateLabelColor = [settings objectForKey:@"dateLabelColor"];
+		[dateLabel setTextColor:LCPParseColorString(dateLabelColor, @"#000000")];
 	}
 
 	%orig;
@@ -500,11 +390,9 @@
 %end
 
 %hook WAMessageFooterView
--(id)statusImage {
-	// NSLog(@"---fidele007---set status: %llu", self.status);
+- (id)statusImage {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
-	// if (enabledWhatsAppCustomizer && &MSHookIvar<UIImageView *>(self, "_statusImageView")) {
 	if (enabledWhatsAppCustomizer) {
 		UIImageView *statusImageView = MSHookIvar<UIImageView *>(self, "_statusImageView");
 		UIImage *statusImage  = %orig;
@@ -521,41 +409,33 @@
 
 // Set time stamp label color
 %hook WATextMessageCell
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
-		// if (&MSHookIvar<WAMessageTextView *>(self, "_messageTextView")) {
-			WAMessageTextView *messageTextView = MSHookIvar<WAMessageTextView *>(self, "_messageTextView");
-			// if (&MSHookIvar<WAMessageFooterView *>(messageTextView, "_footerView")) {
-				WAMessageFooterView *footerView = MSHookIvar<WAMessageFooterView *>(messageTextView, "_footerView");
-				// if (&MSHookIvar<UILabel *>(footerView, "_timestampLabel")) {
-					UILabel *timeStampLabel = MSHookIvar<UILabel *>(footerView, "_timestampLabel");
-					if (self.cellData.isFromMe) {
-						NSString *yourTimeStampLabelColor = [settings objectForKey:@"yourTimeStampLabelColor"];
-						[timeStampLabel setTextColor:LCPParseColorString(yourTimeStampLabelColor, @"#D3D3D3")];
-					} else {
-						NSString *otherPersonTimeStampLabelColor = [settings objectForKey:@"otherPersonTimeStampLabelColor"];
-						[timeStampLabel setTextColor:LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3")];
-					}
-				// }
-			// }
-		// }
+		WAMessageTextView *messageTextView = MSHookIvar<WAMessageTextView *>(self, "_messageTextView");
+		WAMessageFooterView *footerView = MSHookIvar<WAMessageFooterView *>(messageTextView, "_footerView");
+		UILabel *timeStampLabel = MSHookIvar<UILabel *>(footerView, "_timestampLabel");
+		if (self.cellData.isFromMe) {
+			NSString *yourTimeStampLabelColor = [settings objectForKey:@"yourTimeStampLabelColor"];
+			[timeStampLabel setTextColor:LCPParseColorString(yourTimeStampLabelColor, @"#D3D3D3")];
+		} else {
+			NSString *otherPersonTimeStampLabelColor = [settings objectForKey:@"otherPersonTimeStampLabelColor"];
+			[timeStampLabel setTextColor:LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3")];
+		}
 	}	
 }
 %end
 
 %hook WAGroupEventMessageCell
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
-		// if (&MSHookIvar<WALabel *>(self, "_eventTextLabel")) {
-			WALabel *eventTextLabel = MSHookIvar<WALabel *>(self, "_eventTextLabel");
-			NSString *eventTextColor = [settings objectForKey:@"eventTextColor"];
-			[eventTextLabel setTextColor:LCPParseColorString(eventTextColor, @"#000000")];
-		// }
+		WALabel *eventTextLabel = MSHookIvar<WALabel *>(self, "_eventTextLabel");
+		NSString *eventTextColor = [settings objectForKey:@"eventTextColor"];
+		[eventTextLabel setTextColor:LCPParseColorString(eventTextColor, @"#000000")];
 	}
 	%orig;
 }
@@ -564,16 +444,14 @@
 // Fix rounded cornered image (the original implementation is kinda messed up)
 
 %hook WALargeMediaMessageCell
--(void)layoutSubviews {
+- (void)layoutSubviews {
 	%orig;
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (enabledWhatsAppCustomizer) {
 		// Hide _roundedCornersImageView
-		// if (&MSHookIvar<UIImageView *>(self, "_roundedCornersImageView")) {
-			UIImageView *roundedCornersImageView = MSHookIvar<UIImageView *>(self, "_roundedCornersImageView");
-			roundedCornersImageView.hidden = 1;
-		// }
+		UIImageView *roundedCornersImageView = MSHookIvar<UIImageView *>(self, "_roundedCornersImageView");
+		roundedCornersImageView.hidden = 1;
 		// Rounded corner of lowerRightShadowView
 		if (self.lowerRightShadowView) {
 			self.lowerRightShadowView.layer.cornerRadius = 5;
@@ -582,16 +460,14 @@
 
 		// Set timestamp label color for large media message cell
 		if (self.footerView) {
-			// if (&MSHookIvar<UILabel *>(self.footerView, "_timestampLabel")) {
-				UILabel *timeStampLabel = MSHookIvar<UILabel *>(self.footerView, "_timestampLabel");
-				if (self.cellData.isFromMe) {
-					NSString *yourTimeStampLabelColor = [settings objectForKey:@"yourTimeStampLabelColor"];
-					[timeStampLabel setTextColor:LCPParseColorString(yourTimeStampLabelColor, @"#D3D3D3")];
-				} else {
-					NSString *otherPersonTimeStampLabelColor = [settings objectForKey:@"otherPersonTimeStampLabelColor"];
-					[timeStampLabel setTextColor:LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3")];
-				}
-			// }
+			UILabel *timeStampLabel = MSHookIvar<UILabel *>(self.footerView, "_timestampLabel");
+			if (self.cellData.isFromMe) {
+				NSString *yourTimeStampLabelColor = [settings objectForKey:@"yourTimeStampLabelColor"];
+				[timeStampLabel setTextColor:LCPParseColorString(yourTimeStampLabelColor, @"#D3D3D3")];
+			} else {
+				NSString *otherPersonTimeStampLabelColor = [settings objectForKey:@"otherPersonTimeStampLabelColor"];
+				[timeStampLabel setTextColor:LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3")];
+			}
 		}
 	}
 }
@@ -599,7 +475,7 @@
 
 // Rounded corners of image
 %hook WAMediaDataPresentationController
--(UIView *)view {
+- (UIView *)view {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
 	BOOL enabledWhatsAppCustomizer = [[settings objectForKey:@"enabledWhatsAppCustomizer"] boolValue];
 	if (%orig && enabledWhatsAppCustomizer) {

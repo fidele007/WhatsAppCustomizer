@@ -1,0 +1,87 @@
+@interface WALabel : UILabel
+@end
+
+@interface TextMessage
+@property (nonatomic,retain) UIColor * textColor;
+@property (nonatomic,retain) UIColor * urlColor;
+@end
+
+@interface _TextMessage_TextKit : TextMessage
+@end
+
+@interface WAChatCellData : NSObject
+@property (nonatomic,readonly) BOOL isFromMe;
+@property (nonatomic,retain) NSArray * textMessages;
+@property (nonatomic,readonly) unsigned long long footerStatus; 
+@end
+
+@interface WAMessageCell : UITableViewCell
+@property (nonatomic,readonly) WAChatCellData * cellData;
+@property (nonatomic,retain) UIImageView * bubbleImageView;
+@property (nonatomic,readonly) UIView * bubbleView;
+@property (nonatomic,readonly) UILabel * fromNameLabel; 
+@end
+
+@interface WATextMessageCell : WAMessageCell
+@end
+
+@interface WAMessageTextView : UIView
+@end
+
+@interface WAMessageFooterView : UIView
+@property (nonatomic,readonly) unsigned long long status;
+@end
+
+@interface WABubbleView : UIView
+@property (nonatomic,readonly) WAMessageFooterView * messageStatusView;
+@end
+
+@interface WAInstantVoiceBubbleView : WABubbleView
+@end
+
+@interface WAGroupEventMessageCell : WAMessageCell
+@end
+
+@interface WALargeMediaMessageCell : WAMessageCell
+@property (nonatomic,readonly) UIImageView * lowerRightShadowView;
+@property (nonatomic,readonly) WAMessageFooterView * footerView;
+@end
+
+@interface _WANoBlurNavigationBar : UINavigationBar
+@end
+
+@interface WAConversationHeaderView : UIView
+@end
+
+@interface WAChatBar : UIView
+@property (nonatomic,readonly) UIButton * sendButton;
+@property (nonatomic,readonly) UIButton * attachMediaButton;
+@property (nonatomic,readonly) UIButton * cameraButton;
+@property (nonatomic,readonly) UIButton * pttButton;
+@end
+
+@interface WATabBarController : UITabBarController
+@end
+
+@interface ContactsViewController
+@property (nonatomic,retain) UITableView * tableView;
+@end
+
+@interface ContactTableViewCell : UITableViewCell
+@end
+
+@interface WAContactInfoTableViewCell : UITableViewCell
+@end
+
+@interface WAProfilePictureThumbnailView : UIImageView
+@end
+
+@interface WAChatSessionCell : UITableViewCell
+@end
+
+@interface _WAChatSessionCellModern : WAChatSessionCell
+@end
+
+@interface WhatsAppAppDelegate : NSObject
+@property (nonatomic,retain) UIWindow * window;
+@end
