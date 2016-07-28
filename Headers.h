@@ -18,14 +18,14 @@
 @property (nonatomic,readonly) BOOL canBeForwarded;
 @property (nonatomic,readonly) BOOL isFromMe;
 @property (nonatomic,retain) NSArray * textMessages;
-@property (nonatomic,readonly) unsigned long long footerStatus; 
+@property (nonatomic,readonly) unsigned long long footerStatus;
 @end
 
 @interface WAMessageCell : UITableViewCell
 @property (nonatomic,readonly) WAChatCellData * cellData;
 @property (nonatomic,retain) UIImageView * bubbleImageView;
 @property (nonatomic,readonly) UIView * bubbleView;
-@property (nonatomic,readonly) UILabel * fromNameLabel; 
+@property (nonatomic,readonly) UILabel * fromNameLabel;
 @end
 
 @interface WATextMessageCell : WAMessageCell
@@ -111,11 +111,20 @@
 @end
 
 @interface WAMessageContainerSlice : NSObject
+@property (nonatomic,copy,readonly) NSArray * links;
 @end
 
-@interface WAMessageAttributedTextSlice : WAMessageContainerSlice
+@interface WAMessageAttributedTextSlice : WAMessageContainerSlice {
+  NSTextStorage* _textStorage;
+  NSLock* _textObjectsLock;
+}
+@property (nonatomic,copy,readonly) NSArray * links;
 @end
 
 @interface WAMessageAttributedTextSliceView
-@property (nonatomic,readonly) WAMessageAttributedTextSlice * slice; 
+@property (nonatomic,readonly) WAMessageAttributedTextSlice * slice;
+@end
+
+@interface WAMessageAttributedTextSliceLink : NSObject
+@property (nonatomic,copy) NSString *text;
 @end

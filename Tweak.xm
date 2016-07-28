@@ -24,7 +24,7 @@
     if (![statusBarBackgroundColor isEqualToString:@"#FFFFFF:0"]) {
       arg2 = LCPParseColorString(statusBarBackgroundColor, @"#FFFFFF:0");
     }
-    
+
     NSString *statusBarForegroundColor = settings[@"statusBarForegroundColor"];
     if (![statusBarForegroundColor isEqualToString:@"#000000:1"]) {
       arg3 = LCPParseColorString(statusBarForegroundColor, @"#000000");
@@ -349,9 +349,9 @@
   NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
-    NSArray *textMessageArray = %orig;
-    if (textMessageArray != nil) {
-      for (_TextMessage_TextKit *textMessage in %orig) {
+    NSArray *textMessageArray = [%orig mutableCopy];
+    if (textMessageArray && [textMessageArray count] > 0) {
+      for (_TextMessage_TextKit *textMessage in textMessageArray) {
         if (self.isFromMe) {
           NSString *yourTextColor = settings[@"yourTextColor"];
           NSString *yourURLTextColor = settings[@"yourURLTextColor"];
@@ -364,6 +364,7 @@
           textMessage.urlColor = LCPParseColorString(otherPersonURLTextColor, @"#1184FB");
         }
       }
+      return textMessageArray;
     }
   }
   return %orig;
@@ -381,7 +382,7 @@
     bubbleImageView.image = [bubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     NSString *dateBubbleColor = settings[@"dateBubbleColor"];
     bubbleImageView.tintColor = LCPParseColorString(dateBubbleColor, @"#D7DCF0");
-    
+
     // Set date label color
     UILabel *dateLabel = MSHookIvar<UILabel *>(self, "_titleLabel");
     NSString *dateLabelColor = settings[@"dateLabelColor"];
@@ -427,7 +428,7 @@
       NSString *otherPersonTimeStampLabelColor = settings[@"otherPersonTimeStampLabelColor"];
       timeStampLabel.textColor = LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3");
     }
-  } 
+  }
 }
 %end
 
@@ -491,7 +492,7 @@
 }
 %end
 
-// TODO : improvement
+// TODO : Fix image's corners not rounded
 %hook WAMessageMediaSliceView
 - (WAAutoCropImageView *)imageView {
   NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
@@ -505,21 +506,87 @@
 }
 %end
 
-static void changeTextStorageColor(NSTextStorage *textStorage, NSLayoutManager *layoutManager, NSLock *lock, NSString *color, NSString *fallbackColor) {
+static void changeTextStorageColor(NSLock *lock,
+                                   NSTextStorage *textStorage,
+                                   NSArray *links,
+                                   NSString *textColor,
+                                   NSString *fallbackTextColor,
+                                   NSString *linkColor,
+                                   NSString *fallbackLinkColor) {
   [lock lock];
-  NSTextStorage *newTextStorage = [[[NSTextStorage alloc] initWithAttributedString:textStorage] retain];
-  NSRange range = NSMakeRange(0, [newTextStorage length]);
-  [newTextStorage removeAttribute:NSForegroundColorAttributeName range:range];
-  [newTextStorage addAttribute:NSForegroundColorAttributeName 
-                       value:LCPParseColorString(color, fallbackColor)
-                       range:range];
-  [layoutManager replaceTextStorage:newTextStorage];
+  NSRange range = NSMakeRange(0, [textStorage length]);
+  [textStorage removeAttribute:NSForegroundColorAttributeName range:range];
+  [textStorage addAttribute:NSForegroundColorAttributeName
+                      value:LCPParseColorString(textColor, fallbackTextColor)
+                      range:range];
+  if ([links count] > 0) {
+    for (WAMessageAttributedTextSliceLink *link in links) {
+      NSString *pattern = [NSString stringWithFormat:@"(%@)", link.text];
+      NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:kNilOptions error:nil];
+      [regex enumerateMatchesInString:textStorage.string options:kNilOptions range:range usingBlock:
+          ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+              NSRange subStringRange = [result rangeAtIndex:1];
+              [textStorage addAttribute:NSForegroundColorAttributeName
+                                              value:LCPParseColorString(linkColor, fallbackLinkColor)
+                                              range:subStringRange];
+          }];
+    }
+  }
+  // TODO: Fix changes not applied instantly
   [lock unlock];
-  [newTextStorage release];
 }
 
 // Normal bubble image view (New)
 %hook WAMessageContainerView
+- (NSArray *)sliceViews {
+  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
+  if (!enabledWhatsAppCustomizer) {
+    return %orig;;
+  }
+
+  WAChatCellData *cellData = self.cellData;
+  if (!cellData) {
+    return %orig;
+  }
+
+  NSArray *sliceViews = [%orig mutableCopy];
+  for (WAMessageAttributedTextSliceView *sliceView in sliceViews) {
+    WAMessageContainerSlice *slice = MSHookIvar<WAMessageContainerSlice *>(sliceView, "_slice");
+    if (cellData.isFromMe) {
+      if ([slice isKindOfClass:%c(WAMessageAttributedTextSlice)]) {
+        NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(slice, "_textStorage");
+        NSLock *lock = MSHookIvar<NSLock *>(slice, "_textObjectsLock");
+        NSArray *links = slice.links;
+        NSString *yourTextColor = settings[@"yourTextColor"];
+        NSString *yourURLTextColor = settings[@"yourURLTextColor"];
+        changeTextStorageColor(lock, textStorage, links, yourTextColor, @"#000000", yourURLTextColor, @"#1184FB");
+      }
+    } else if (!self.cellData.canBeForwarded) {
+      if ([slice isKindOfClass:%c(WAMessageAttributedTextSlice)]) {
+        NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(slice, "_textStorage");
+        NSLock *lock = MSHookIvar<NSLock *>(slice, "_textObjectsLock");
+        NSString *eventTextColor = settings[@"eventTextColor"];
+        changeTextStorageColor(lock, textStorage, nil, eventTextColor, @"#000000", nil, nil);
+      }
+    } else {
+      if ([slice isKindOfClass:%c(WAMessageAttributedTextSlice)]) {
+        NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(slice, "_textStorage");
+        NSLock *lock = MSHookIvar<NSLock *>(slice, "_textObjectsLock");
+        NSString *otherPersonTextColor = settings[@"otherPersonTextColor"];
+        NSString *otherPersonURLTextColor = settings[@"otherPersonURLTextColor"];
+        NSArray *links = slice.links;
+        changeTextStorageColor(lock, textStorage, links, otherPersonTextColor, @"#000000", otherPersonURLTextColor, @"#1184FB");
+      } else if ([slice isKindOfClass:%c(WAMessageSenderNameSlice)]) {
+        NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(slice, "_senderNameTextStorage");
+        NSString *senderLabelColor = settings[@"senderLabelColor"];
+        changeTextStorageColor(nil, textStorage, nil, senderLabelColor, @"#32948A", nil, nil);
+      }
+    }
+  }
+  return sliceViews;
+}
+
 - (void)updateBubbleImageView {
   %orig;
 
@@ -558,66 +625,4 @@ static void changeTextStorageColor(NSTextStorage *textStorage, NSLayoutManager *
     }
   }
 }
-
-- (NSArray *)sliceViews {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
-  BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
-  if (!enabledWhatsAppCustomizer) {
-    return %orig;;
-  }
-
-  WAChatCellData *cellData = self.cellData;
-  if (!cellData) {
-    return %orig;
-  }
-
-  NSArray *sliceViews = [%orig mutableCopy];
-  for (WAMessageAttributedTextSliceView *sliceView in sliceViews) {
-    WAMessageContainerSlice *slice = MSHookIvar<WAMessageContainerSlice *>(sliceView, "_slice");
-    if (cellData.isFromMe) {
-      if ([slice isKindOfClass:%c(WAMessageAttributedTextSlice)]) {
-        NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(slice, "_textStorage");
-        NSLayoutManager *layoutManager = MSHookIvar<NSLayoutManager *>(slice, "_layoutManager");
-        NSLock *lock = MSHookIvar<NSLock *>(slice, "_textObjectsLock");
-        NSString *yourTextColor = settings[@"yourTextColor"];
-        changeTextStorageColor(textStorage, layoutManager, lock, yourTextColor, @"#000000");
-      }
-    } else if (!self.cellData.canBeForwarded) {
-      if ([slice isKindOfClass:%c(WAMessageAttributedTextSlice)]) {
-        NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(slice, "_textStorage");
-        NSLayoutManager *layoutManager = MSHookIvar<NSLayoutManager *>(slice, "_layoutManager");
-        NSLock *lock = MSHookIvar<NSLock *>(slice, "_textObjectsLock");
-        NSString *eventTextColor = settings[@"eventTextColor"];
-        changeTextStorageColor(textStorage, layoutManager, lock, eventTextColor, @"#000000");
-      }
-    } else {
-      if ([slice isKindOfClass:%c(WAMessageAttributedTextSlice)]) {
-        NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(slice, "_textStorage");
-        NSLayoutManager *layoutManager = MSHookIvar<NSLayoutManager *>(slice, "_layoutManager");
-        NSLock *lock = MSHookIvar<NSLock *>(slice, "_textObjectsLock");
-        NSString *otherPersonTextColor = settings[@"otherPersonTextColor"];
-        changeTextStorageColor(textStorage, layoutManager, lock, otherPersonTextColor, @"#000000");
-      } else if ([slice isKindOfClass:%c(WAMessageSenderNameSlice)]) {
-        NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(slice, "_senderNameTextStorage");
-        NSLayoutManager *layoutManager = MSHookIvar<NSLayoutManager *>(slice, "_senderNameLayoutManager");
-        NSString *senderLabelColor = settings[@"senderLabelColor"];
-        changeTextStorageColor(textStorage, layoutManager, nil, senderLabelColor, @"#32948A");
-      }
-    }
-  }
-
-  return sliceViews;
-}
 %end
-
-// %hook WAMessageAttributedTextSlice
-// - (id)initWithMessage:(id)arg1 metrics:(id)arg2 attributedText:(id)arg3 detectHyperlinks:(BOOL)arg4 formatText:(BOOL)arg5 {
-//   NSMutableAttributedString *attributedString = [arg3 mutableCopy];
-//   NSRange range = NSMakeRange(0, attributedString.length);
-//   [attributedString addAttribute:NSForegroundColorAttributeName 
-//                            value:[UIColor whiteColor]
-//                            range:range];
-//   arg3 = [attributedString copy];
-//   return %orig;
-// }
-// %end
