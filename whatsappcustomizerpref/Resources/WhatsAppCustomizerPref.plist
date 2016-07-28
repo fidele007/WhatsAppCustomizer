@@ -1,607 +1,607 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
+  <dict>
+   <key>items</key>
+   <array>
+    <dict>
+     <key>cell</key>
+     <string>PSGroupCell</string>
+     <key>headerCellClass</key>
+     <string>WhatsAppCustomizerCell</string>
+   </dict>
+   <dict>
+     <key>cell</key>
+     <string>PSGroupCell</string>
+     <key>label</key>
+     <string></string>
+     <key>footerText</key>
+     <string>After modification, press "Save" on the top right to kill WhatsApp in order for the changes to take effect.</string>
+   </dict>
+   <dict>
+     <key>defaults</key>
+     <string>com.fidele007.whatsappcustomizerpref</string>
+     <key>cell</key>
+     <string>PSSwitchCell</string>
+     <key>key</key>
+     <string>enabledWhatsAppCustomizer</string>
+     <key>label</key>
+     <string>Enable</string>
+     <key>default</key>
+     <false/>
+   </dict>
+   <dict>
+    <key>action</key>
+    <string>launchWhatsApp</string>
+    <key>cell</key>
+    <string>PSButtonCell</string>
+    <key>label</key>
+    <string>Launch WhatsApp</string>
+  </dict>
+  <dict>
+   <key>cell</key>
+   <string>PSGroupCell</string>
+   <key>label</key>
+   <string>You</string>
+ </dict>
+ <dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>yourBubbleColor</string>
+    <key>fallback</key>
+    <string>#DCF8C6</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Bubble Color</string>
+</dict>
 <dict>
-	<key>items</key>
-	<array>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>headerCellClass</key>
-			<string>WhatsAppCustomizerCell</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string></string>
-			<key>footerText</key>
-			<string>After modification, press "Save" on the top right to kill WhatsApp in order for the changes to take effect.</string>
-		</dict>
-		<dict>
-			<key>defaults</key>
-			<string>com.fidele007.whatsappcustomizerpref</string>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>key</key>
-			<string>enabledWhatsAppCustomizer</string>
-			<key>label</key>
-			<string>Enable</string>
-			<key>default</key>
-			<false/>
-		</dict>
-            <dict>
-                  <key>action</key>
-                  <string>launchWhatsApp</string>
-                  <key>cell</key>
-                  <string>PSButtonCell</string>
-                  <key>label</key>
-                  <string>Launch WhatsApp</string>
-            </dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>You</string>
-		</dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>yourBubbleColor</string>
-                        <key>fallback</key>
-                        <string>#DCF8C6</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Bubble Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>yourInstantVoiceBubbleColor</string>
-                        <key>fallback</key>
-                        <string>#DCF8C6</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Instant Voice Bubble Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>yourTextColor</string>
-                        <key>fallback</key>
-                        <string>#000000</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Text Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>yourURLTextColor</string>
-                        <key>fallback</key>
-                        <string>#1184FB</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>URL Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>yourTimeStampLabelColor</string>
-                        <key>fallback</key>
-                        <string>#D3D3D3</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Time Stamp Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>messageStatusColor</string>
-                        <key>fallback</key>
-                        <string>#1184FB</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Seen Status Color</string>
-            </dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Other Person</string>
-		</dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>otherPersonBubbleColor</string>
-                        <key>fallback</key>
-                        <string>#FAFAFA</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Bubble Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>otherPersonInstantVoiceBubbleColor</string>
-                        <key>fallback</key>
-                        <string>#FAFAFA</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Instant Voice Bubble Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>otherPersonTextColor</string>
-                        <key>fallback</key>
-                        <string>#000000</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Text Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>otherPersonURLTextColor</string>
-                        <key>fallback</key>
-                        <string>#1184FB</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>URL Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>otherPersonTimeStampLabelColor</string>
-                        <key>fallback</key>
-                        <string>#D3D3D3</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Time Stamp Color</string>
-            </dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Date Bubble View</string>
-		</dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>dateBubbleColor</string>
-                        <key>fallback</key>
-                        <string>#D7DCF0</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Bubble Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>dateLabelColor</string>
-                        <key>fallback</key>
-                        <string>#000000</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Label Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSGroupCell</string>
-                  <key>label</key>
-                  <string>GROUP CHAT</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>senderLabelColor</string>
-                        <key>fallback</key>
-                        <string>#32948A</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Sender Label Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>eventTextBubbleColor</string>
-                        <key>fallback</key>
-                        <string>#D0E9FB</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Event Text Bubble Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>eventTextColor</string>
-                        <key>fallback</key>
-                        <string>#000000</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Event Text Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSGroupCell</string>
-                  <key>label</key>
-                  <string>APP TINT</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>tintColor</string>
-                        <key>fallback</key>
-                        <string>#007CFF</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Tint Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>navbarBackgroundColor</string>
-                        <key>fallback</key>
-                        <string>#F7F7F7</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>NavBar Background Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>navbarTitleColor</string>
-                        <key>fallback</key>
-                        <string>#000000</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>NavBar Title Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>statusBarBackgroundColor</string>
-                        <key>fallback</key>
-                        <string>#FFFFFF</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Status Bar Background Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>statusBarForegroundColor</string>
-                        <key>fallback</key>
-                        <string>#000000</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Status Bar Foreground Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSGroupCell</string>
-                  <key>label</key>
-                  <string>CHAT TOOLBAR</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>toolbarBackgroundColor</string>
-                        <key>fallback</key>
-                        <string>#F7F7F7</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Toolbar Background Color</string>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSLinkCell</string>
-                  <key>cellClass</key>
-                  <string>PFSimpleLiteColorCell</string>
-                  <key>libcolorpicker</key>
-                  <dict>
-                        <key>defaults</key>
-                        <string>com.fidele007.whatsappcustomizerpref</string>
-                        <key>key</key>
-                        <string>toolbarItemColor</string>
-                        <key>fallback</key>
-                        <string>#007CFF</string>
-                        <key>alpha</key>
-                        <true/>
-                  </dict>
-                  <key>label</key>
-                  <string>Item Color</string>
-            </dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>MISCELLANEOUS</string>
-                  <key>footerText</key>
-                  <string>Leaving the text field blank will revert the font size to its default value.</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSEditTextCell</string>
-			<key>isNumeric</key>
-			<true/>
-			<key>default</key>
-			<string>12</string>
-			<key>defaults</key>
-			<string>com.fidele007.whatsappcustomizerpref</string>
-			<key>key</key>
-			<string>chatFontSize</string>
-			<key>label</key>
-			<string>Chat Font Size</string>
-			<key>placeholder</key>
-			<string>Default</string>
-		</dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSGroupCell</string>
-                  <key>footerText</key>
-                  <string>This will reset all settings to its defaults.</string>
-            </dict>
-            <dict>
-                  <key>action</key>
-                  <string>resetPreferences</string>
-                  <key>cell</key>
-                  <string>PSButtonCell</string>
-                  <key>label</key>
-                  <string>Reset to Defaults</string>
-                  <key>alignment</key>
-                  <string>center</string>
-                  <key>isDestructive</key>
-                  <true/>
-                  <key>confirmation</key>
-                  <dict>
-                        <key>prompt</key>
-                        <string>Do you really want to reset all the Settings?</string>
-                        <key>title</key>
-                        <string>Reset</string>
-                        <key>cancelTitle</key>
-                        <string>Cancel</string>
-                  </dict>
-            </dict>
-            <dict>
-                  <key>cell</key>
-                  <string>PSGroupCell</string>
-                  <key>footerText</key>
-                  <string>Copyright © 2015 by fidele007.</string>
-                  <key>label</key>
-                  <string>ABOUT</string>
-            </dict>
-            <dict>
-                  <key>action</key>
-                  <string>twitter</string>
-                  <key>cell</key>
-                  <string>PSButtonCell</string>
-                  <key>icon</key>
-                  <string>twitter.png</string>
-                  <key>label</key>
-                  <string>@kienforcefidele</string>
-            </dict>
-            <dict>
-                  <key>action</key>
-                  <string>donate</string>
-                  <key>cell</key>
-                  <string>PSButtonCell</string>
-                  <key>icon</key>
-                  <string>paypal.png</string>
-                  <key>label</key>
-                  <string>Donate via PayPal</string>
-            </dict>
-            <dict>
-                  <key>action</key>
-                  <string>seeSourceCode</string>
-                  <key>cell</key>
-                  <string>PSButtonCell</string>
-                  <key>icon</key>
-                  <string>github.png</string>
-                  <key>label</key>
-                  <string>Source Code</string>
-            </dict>
-	</array>
-	<key>title</key>
-	<string></string>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>yourInstantVoiceBubbleColor</string>
+    <key>fallback</key>
+    <string>#DCF8C6</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Instant Voice Bubble Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>yourTextColor</string>
+    <key>fallback</key>
+    <string>#000000</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Text Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>yourURLTextColor</string>
+    <key>fallback</key>
+    <string>#1184FB</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>URL Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>yourTimeStampLabelColor</string>
+    <key>fallback</key>
+    <string>#D3D3D3</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Time Stamp Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>messageStatusColor</string>
+    <key>fallback</key>
+    <string>#1184FB</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Seen Status Color</string>
+</dict>
+<dict>
+ <key>cell</key>
+ <string>PSGroupCell</string>
+ <key>label</key>
+ <string>Other Person</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>otherPersonBubbleColor</string>
+    <key>fallback</key>
+    <string>#FAFAFA</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Bubble Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>otherPersonInstantVoiceBubbleColor</string>
+    <key>fallback</key>
+    <string>#FAFAFA</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Instant Voice Bubble Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>otherPersonTextColor</string>
+    <key>fallback</key>
+    <string>#000000</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Text Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>otherPersonURLTextColor</string>
+    <key>fallback</key>
+    <string>#1184FB</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>URL Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>otherPersonTimeStampLabelColor</string>
+    <key>fallback</key>
+    <string>#D3D3D3</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Time Stamp Color</string>
+</dict>
+<dict>
+ <key>cell</key>
+ <string>PSGroupCell</string>
+ <key>label</key>
+ <string>Date Bubble View</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>dateBubbleColor</string>
+    <key>fallback</key>
+    <string>#D7DCF0</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Bubble Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>dateLabelColor</string>
+    <key>fallback</key>
+    <string>#000000</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Label Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSGroupCell</string>
+  <key>label</key>
+  <string>GROUP CHAT</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>senderLabelColor</string>
+    <key>fallback</key>
+    <string>#32948A</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Sender Label Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>eventTextBubbleColor</string>
+    <key>fallback</key>
+    <string>#D0E9FB</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Event Text Bubble Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>eventTextColor</string>
+    <key>fallback</key>
+    <string>#000000</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Event Text Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSGroupCell</string>
+  <key>label</key>
+  <string>APP TINT</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>tintColor</string>
+    <key>fallback</key>
+    <string>#007CFF</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Tint Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>navbarBackgroundColor</string>
+    <key>fallback</key>
+    <string>#F7F7F7</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>NavBar Background Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>navbarTitleColor</string>
+    <key>fallback</key>
+    <string>#000000</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>NavBar Title Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>statusBarBackgroundColor</string>
+    <key>fallback</key>
+    <string>#FFFFFF</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Status Bar Background Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>statusBarForegroundColor</string>
+    <key>fallback</key>
+    <string>#000000</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Status Bar Foreground Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSGroupCell</string>
+  <key>label</key>
+  <string>CHAT TOOLBAR</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>toolbarBackgroundColor</string>
+    <key>fallback</key>
+    <string>#F7F7F7</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Toolbar Background Color</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSLinkCell</string>
+  <key>cellClass</key>
+  <string>PFSimpleLiteColorCell</string>
+  <key>libcolorpicker</key>
+  <dict>
+    <key>defaults</key>
+    <string>com.fidele007.whatsappcustomizerpref</string>
+    <key>key</key>
+    <string>toolbarItemColor</string>
+    <key>fallback</key>
+    <string>#007CFF</string>
+    <key>alpha</key>
+    <true/>
+  </dict>
+  <key>label</key>
+  <string>Item Color</string>
+</dict>
+<dict>
+ <key>cell</key>
+ <string>PSGroupCell</string>
+ <key>label</key>
+ <string>MISCELLANEOUS</string>
+ <key>footerText</key>
+ <string>Leaving the text field blank will revert the font size to its default value.</string>
+</dict>
+<dict>
+ <key>cell</key>
+ <string>PSEditTextCell</string>
+ <key>isNumeric</key>
+ <true/>
+ <key>default</key>
+ <string>12</string>
+ <key>defaults</key>
+ <string>com.fidele007.whatsappcustomizerpref</string>
+ <key>key</key>
+ <string>chatFontSize</string>
+ <key>label</key>
+ <string>Chat Font Size</string>
+ <key>placeholder</key>
+ <string>Default</string>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSGroupCell</string>
+  <key>footerText</key>
+  <string>This will reset all settings to its defaults.</string>
+</dict>
+<dict>
+  <key>action</key>
+  <string>resetPreferences</string>
+  <key>cell</key>
+  <string>PSButtonCell</string>
+  <key>label</key>
+  <string>Reset to Defaults</string>
+  <key>alignment</key>
+  <string>center</string>
+  <key>isDestructive</key>
+  <true/>
+  <key>confirmation</key>
+  <dict>
+    <key>prompt</key>
+    <string>Do you really want to reset all the Settings?</string>
+    <key>title</key>
+    <string>Reset</string>
+    <key>cancelTitle</key>
+    <string>Cancel</string>
+  </dict>
+</dict>
+<dict>
+  <key>cell</key>
+  <string>PSGroupCell</string>
+  <key>footerText</key>
+  <string>Copyright © 2016 by fidele007.</string>
+  <key>label</key>
+  <string>ABOUT</string>
+</dict>
+<dict>
+  <key>action</key>
+  <string>twitter</string>
+  <key>cell</key>
+  <string>PSButtonCell</string>
+  <key>icon</key>
+  <string>twitter.png</string>
+  <key>label</key>
+  <string>@kienforcefidele</string>
+</dict>
+<dict>
+  <key>action</key>
+  <string>donate</string>
+  <key>cell</key>
+  <string>PSButtonCell</string>
+  <key>icon</key>
+  <string>paypal.png</string>
+  <key>label</key>
+  <string>Donate via PayPal</string>
+</dict>
+<dict>
+  <key>action</key>
+  <string>seeSourceCode</string>
+  <key>cell</key>
+  <string>PSButtonCell</string>
+  <key>icon</key>
+  <string>github.png</string>
+  <key>label</key>
+  <string>Source Code</string>
+</dict>
+</array>
+<key>title</key>
+<string></string>
 </dict>
 </plist>

@@ -1,3 +1,8 @@
+@interface NSLayoutManager (WhatsAppCustomizer)
+- (void)setBackgroundLayoutEnabled:(BOOL)arg1 ;
+- (void)replaceTextStorage:(id)arg1 ;
+@end
+
 @interface WALabel : UILabel
 @end
 
@@ -10,6 +15,7 @@
 @end
 
 @interface WAChatCellData : NSObject
+@property (nonatomic,readonly) BOOL canBeForwarded;
 @property (nonatomic,readonly) BOOL isFromMe;
 @property (nonatomic,retain) NSArray * textMessages;
 @property (nonatomic,readonly) unsigned long long footerStatus; 
@@ -84,4 +90,32 @@
 
 @interface WhatsAppAppDelegate : NSObject
 @property (nonatomic,retain) UIWindow * window;
+@end
+
+// New
+@interface _WANoHighlightImageView : UIImageView
+@end
+
+@interface WAMessageContainerView : UIView {
+  _WANoHighlightImageView* _bubbleImageView;
+  NSArray* _sliceViews;
+}
+@property (nonatomic,readonly) WAChatCellData * cellData;
+@property (nonatomic,readonly) NSArray * sliceViews;
+- (id)audioSliceView;
+- (void)reloadSliceViews;
+- (void)reloadSlicesIfNeeded;
+@end
+
+@interface WAAutoCropImageView : UIImageView
+@end
+
+@interface WAMessageContainerSlice : NSObject
+@end
+
+@interface WAMessageAttributedTextSlice : WAMessageContainerSlice
+@end
+
+@interface WAMessageAttributedTextSliceView
+@property (nonatomic,readonly) WAMessageAttributedTextSlice * slice; 
 @end
