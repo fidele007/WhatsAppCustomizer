@@ -114,6 +114,12 @@
 @property (nonatomic,copy,readonly) NSArray * links;
 @end
 
+@interface WAMessageSenderNameSlice : WAMessageContainerSlice {
+    NSTextStorage *_senderNameTextStorage;
+}
+-(id)initWithMessage:(id)arg1 metrics:(id)arg2 ;
+@end
+
 @interface WAMessageAttributedTextSlice : WAMessageContainerSlice {
   NSTextStorage* _textStorage;
   NSLock* _textObjectsLock;
@@ -127,4 +133,12 @@
 
 @interface WAMessageAttributedTextSliceLink : NSObject
 @property (nonatomic,copy) NSString *text;
+@end
+
+@interface WAMessage
+@property (assign,nonatomic) BOOL isFromMe;
+@property (nonatomic,readonly) BOOL canBeForwarded;
+@property (nonatomic,readonly) unsigned long long footerStatus;
+- (NSAttributedString *)footerAttributedText;
+- (NSAttributedString *)attributedText;
 @end
