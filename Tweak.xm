@@ -30,6 +30,7 @@
       arg3 = LCPParseColorString(statusBarForegroundColor, @"#000000");
     }
   }
+
   return %orig;
 }
 %end
@@ -120,7 +121,8 @@
     self.tintColor = LCPParseColorString(tintColor, @"#007CFF");
     // Set navigation bar title color
     NSString *navbarTitleColor = settings[@"navbarTitleColor"];
-    self.titleTextAttributes = [NSDictionary dictionaryWithObject:LCPParseColorString(navbarTitleColor, @"#000000") forKey:NSForegroundColorAttributeName];
+    UIColor *titleColor = LCPParseColorString(navbarTitleColor, @"#000000");
+    self.titleTextAttributes = [NSDictionary dictionaryWithObject:titleColor forKey:NSForegroundColorAttributeName];
     // Set navigation bar background color
     NSString *navbarBackgroundColor = settings[@"navbarBackgroundColor"];
     MSHookIvar<UIView *>(self, "_grayBackgroundView").backgroundColor = LCPParseColorString(navbarBackgroundColor, @"#F7F7F7");
@@ -180,6 +182,7 @@
   }
   return %orig;
 }
+
 - (UILabel *)captionLabel {
   NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
@@ -552,139 +555,156 @@
 }
 %end
 
-// Message text colors
-%hook WAMessage
-- (NSAttributedString *)attributedText {
-    NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
-    BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
-    if (!enabledWhatsAppCustomizer) {
-      return %orig;
-    }
-
-    NSMutableAttributedString *attrString = [%orig mutableCopy];
-    NSRange range = NSMakeRange(0, [attrString length]);
-    [attrString removeAttribute:NSForegroundColorAttributeName range:range];
-    if (self.isFromMe) {
-        NSString *yourTextColor = settings[@"yourTextColor"];
-        [attrString beginEditing];
-        [attrString addAttribute:NSForegroundColorAttributeName
-                            value:LCPParseColorString(yourTextColor, @"#000000")
-                            range:range];
-        [attrString endEditing];
-    } else if (!self.canBeForwarded) {
-        NSString *eventTextColor = settings[@"eventTextColor"];
-        [attrString beginEditing];
-        [attrString addAttribute:NSForegroundColorAttributeName
-                            value:LCPParseColorString(eventTextColor, @"#000000")
-                            range:range];
-        [attrString endEditing];
-    } else {
-        NSString *otherPersonTextColor = settings[@"otherPersonTextColor"];
-        [attrString beginEditing];
-        [attrString addAttribute:NSForegroundColorAttributeName
-                            value:LCPParseColorString(otherPersonTextColor, @"#000000")
-                            range:range];
-        [attrString endEditing];
-    }
-    // TODO: Change colors of URL links
-    return attrString;
-}
-%end
-
 // Footer status colors
 %hook WAMessageStatusSlice
 - (NSAttributedString *)attributedStringForMessage:(id)arg1 {
-    NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
-    BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
-    if (!enabledWhatsAppCustomizer || ![arg1 isKindOfClass:%c(WAMessage)]) {
-      return %orig;
-    }
+  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
+  if (!enabledWhatsAppCustomizer || ![arg1 isKindOfClass:%c(WAMessage)]) {
+    return %orig;
+  }
 
-    NSMutableAttributedString *attrString = [%orig mutableCopy];
-    WAMessage *message = (WAMessage *)arg1;
-    NSRange timeRange;
-    if (message.isFromMe) {
-        timeRange = NSMakeRange(2, [attrString length] - 4);
-        NSString *yourTimeStampLabelColor = settings[@"yourTimeStampLabelColor"];
-        [attrString beginEditing];
-        [attrString addAttribute:NSForegroundColorAttributeName
-                            value:LCPParseColorString(yourTimeStampLabelColor, @"#D3D3D3")
-                            range:timeRange];
-        [attrString endEditing];
-        if ((int)message.footerStatus == 6) {
-            NSRange seenStatusRange = NSMakeRange([attrString length] - 2, 2);
-            NSString *messageStatusColor = settings[@"messageStatusColor"];
-            [attrString beginEditing];
-            [attrString addAttribute:NSForegroundColorAttributeName
-                                value:LCPParseColorString(messageStatusColor, @"#1184FB")
-                                range:seenStatusRange];
-            [attrString endEditing];
-        }
-    } else {
-        timeRange = NSMakeRange(2, [attrString length] - 2);
-        NSString *otherPersonTimeStampLabelColor = settings[@"otherPersonTimeStampLabelColor"];
-        [attrString beginEditing];
-        [attrString addAttribute:NSForegroundColorAttributeName
-                            value:LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3")
-                            range:timeRange];
-        [attrString endEditing];
-    }
+  NSMutableAttributedString *attrString = [%orig mutableCopy];
+  WAMessage *message = (WAMessage *)arg1;
+  NSRange timeRange;
+  if (message.isFromMe) {
+      timeRange = NSMakeRange(2, [attrString length] - 4);
+      NSString *yourTimeStampLabelColor = settings[@"yourTimeStampLabelColor"];
+      [attrString beginEditing];
+      [attrString addAttribute:NSForegroundColorAttributeName
+                         value:LCPParseColorString(yourTimeStampLabelColor, @"#D3D3D3")
+                         range:timeRange];
+      [attrString endEditing];
+      if ((int)message.footerStatus == 6) {
+          NSRange seenStatusRange = NSMakeRange([attrString length] - 2, 2);
+          NSString *messageStatusColor = settings[@"messageStatusColor"];
+          [attrString beginEditing];
+          [attrString addAttribute:NSForegroundColorAttributeName
+                             value:LCPParseColorString(messageStatusColor, @"#1184FB")
+                             range:seenStatusRange];
+          [attrString endEditing];
+      }
+  } else {
+      timeRange = NSMakeRange(2, [attrString length] - 2);
+      NSString *otherPersonTimeStampLabelColor = settings[@"otherPersonTimeStampLabelColor"];
+      [attrString beginEditing];
+      [attrString addAttribute:NSForegroundColorAttributeName
+                         value:LCPParseColorString(otherPersonTimeStampLabelColor, @"#D3D3D3")
+                         range:timeRange];
+      [attrString endEditing];
+  }
 
-    return attrString;
+  return attrString;
 }
 %end
 
 // Sender name label color
 %hook WAMessageSenderNameSlice
 - (WAMessageSenderNameSlice *)initWithMessage:(id)arg1 metrics:(id)arg2 {
-    NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
-    BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
-    if (!enabledWhatsAppCustomizer) {
+  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
+  if (!enabledWhatsAppCustomizer) {
+    return %orig;
+  }
+
+  WAMessageSenderNameSlice *senderNameSlice = %orig;
+  if (!senderNameSlice) {
       return %orig;
-    }
+  }
 
-    WAMessageSenderNameSlice *senderNameSlice = %orig;
-    if (!senderNameSlice) {
-        return %orig;
-    }
+  NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(senderNameSlice, "_senderNameTextStorage");
+  NSString *senderLabelColor = settings[@"senderLabelColor"];
+  NSRange range = NSMakeRange(0, [textStorage length]);
+  [textStorage removeAttribute:NSForegroundColorAttributeName range:range];
+  [textStorage addAttribute:NSForegroundColorAttributeName
+                      value:LCPParseColorString(senderLabelColor, @"#32948A")
+                      range:range];
 
-    NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(senderNameSlice, "_senderNameTextStorage");
-    NSString *senderLabelColor = settings[@"senderLabelColor"];
-    NSRange range = NSMakeRange(0, [textStorage length]);
-    [textStorage removeAttribute:NSForegroundColorAttributeName range:range];
-    [textStorage addAttribute:NSForegroundColorAttributeName
-                        value:LCPParseColorString(senderLabelColor, @"#32948A")
-                        range:range];
-
-    return senderNameSlice;
+  return senderNameSlice;
 }
 %end
 
-// static void changeTextStorageColor(NSLock *lock,
-//                                    NSTextStorage *textStorage,
-//                                    NSArray *links,
-//                                    NSString *textColor,
-//                                    NSString *fallbackTextColor,
-//                                    NSString *linkColor,
-//                                    NSString *fallbackLinkColor) {
-//   [lock lock];
-//   NSRange range = NSMakeRange(0, [textStorage length]);
-//   [textStorage removeAttribute:NSForegroundColorAttributeName range:range];
-//   [textStorage addAttribute:NSForegroundColorAttributeName
-//                       value:LCPParseColorString(textColor, fallbackTextColor)
-//                       range:range];
-//   if ([links count] > 0) {
-//     for (WAMessageAttributedTextSliceLink *link in links) {
-//       NSString *pattern = [NSString stringWithFormat:@"(%@)", link.text];
-//       NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:kNilOptions error:nil];
-//       [regex enumerateMatchesInString:textStorage.string options:kNilOptions range:range usingBlock:
-//           ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-//               NSRange subStringRange = [result rangeAtIndex:1];
-//               [textStorage addAttribute:NSForegroundColorAttributeName
-//                                               value:LCPParseColorString(linkColor, fallbackLinkColor)
-//                                               range:subStringRange];
-//           }];
-//     }
-//   }
-//   [lock unlock];
-// }
+// Message text colors
+%hook WAMessage
+- (NSAttributedString *)attributedText {
+  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
+  if (!enabledWhatsAppCustomizer) {
+    return %orig;
+  }
+
+  NSMutableAttributedString *attrString = [%orig mutableCopy];
+  NSRange range = NSMakeRange(0, [attrString length]);
+  [attrString removeAttribute:NSForegroundColorAttributeName range:range];
+  if (self.isFromMe) {
+      NSString *yourTextColor = settings[@"yourTextColor"];
+      [attrString beginEditing];
+      [attrString addAttribute:NSForegroundColorAttributeName
+                         value:LCPParseColorString(yourTextColor, @"#000000")
+                         range:range];
+      [attrString endEditing];
+  } else if (!self.canBeForwarded) {
+      NSString *eventTextColor = settings[@"eventTextColor"];
+      [attrString beginEditing];
+      [attrString addAttribute:NSForegroundColorAttributeName
+                         value:LCPParseColorString(eventTextColor, @"#000000")
+                         range:range];
+      [attrString endEditing];
+  } else {
+      NSString *otherPersonTextColor = settings[@"otherPersonTextColor"];
+      [attrString beginEditing];
+      [attrString addAttribute:NSForegroundColorAttributeName
+                         value:LCPParseColorString(otherPersonTextColor, @"#000000")
+                         range:range];
+      [attrString endEditing];
+  }
+
+  return attrString;
+}
+%end
+
+// URL Colors
+%hook WAMessageAttributedTextSliceView
+- (void)reloadSliceAfterChange:(unsigned long long)arg1 {
+  %orig;
+  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
+  if (!enabledWhatsAppCustomizer || [self.slice.links count] == 0) {
+    return;
+  }
+
+  NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(self.slice, "_textStorage");
+  NSRange range = NSMakeRange(0, [textStorage length]);
+  if (self.cellData.isFromMe) {
+    NSString *yourURLTextColor = settings[@"yourURLTextColor"];
+    for (WAMessageAttributedTextSliceLink *link in self.slice.links) {
+      NSString *pattern = [NSString stringWithFormat:@"(%@)", link.text];
+      NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern
+                                                                             options:kNilOptions
+                                                                               error:nil];
+      [regex enumerateMatchesInString:textStorage.string options:kNilOptions range:range usingBlock:
+          ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+              NSRange subStringRange = [result rangeAtIndex:1];
+              [textStorage addAttribute:NSForegroundColorAttributeName
+                                  value:LCPParseColorString(yourURLTextColor, @"#1184FB")
+                                  range:subStringRange];
+          }];
+    }
+  } else {
+    NSString *otherPersonURLTextColor = settings[@"otherPersonURLTextColor"];
+    for (WAMessageAttributedTextSliceLink *link in self.slice.links) {
+      NSString *pattern = [NSString stringWithFormat:@"(%@)", link.text];
+      NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern
+                                                                             options:kNilOptions
+                                                                               error:nil];
+      [regex enumerateMatchesInString:textStorage.string options:kNilOptions range:range usingBlock:
+          ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+              NSRange subStringRange = [result rangeAtIndex:1];
+              [textStorage addAttribute:NSForegroundColorAttributeName
+                                  value:LCPParseColorString(otherPersonURLTextColor, @"#1184FB")
+                                  range:subStringRange];
+          }];
+    }
+  }
+}
+%end

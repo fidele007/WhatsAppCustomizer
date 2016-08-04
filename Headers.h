@@ -7,8 +7,8 @@
 @end
 
 @interface TextMessage
-@property (nonatomic,retain) UIColor * textColor;
-@property (nonatomic,retain) UIColor * urlColor;
+@property (nonatomic,retain) UIColor *textColor;
+@property (nonatomic,retain) UIColor *urlColor;
 @end
 
 @interface _TextMessage_TextKit : TextMessage
@@ -17,15 +17,15 @@
 @interface WAChatCellData : NSObject
 @property (nonatomic,readonly) BOOL canBeForwarded;
 @property (nonatomic,readonly) BOOL isFromMe;
-@property (nonatomic,retain) NSArray * textMessages;
+@property (nonatomic,retain) NSArray *textMessages;
 @property (nonatomic,readonly) unsigned long long footerStatus;
 @end
 
 @interface WAMessageCell : UITableViewCell
-@property (nonatomic,readonly) WAChatCellData * cellData;
-@property (nonatomic,retain) UIImageView * bubbleImageView;
-@property (nonatomic,readonly) UIView * bubbleView;
-@property (nonatomic,readonly) UILabel * fromNameLabel;
+@property (nonatomic,readonly) WAChatCellData *cellData;
+@property (nonatomic,retain) UIImageView *bubbleImageView;
+@property (nonatomic,readonly) UIView *bubbleView;
+@property (nonatomic,readonly) UILabel *fromNameLabel;
 @end
 
 @interface WATextMessageCell : WAMessageCell
@@ -39,7 +39,7 @@
 @end
 
 @interface WABubbleView : UIView
-@property (nonatomic,readonly) WAMessageFooterView * messageStatusView;
+@property (nonatomic,readonly) WAMessageFooterView *messageStatusView;
 @end
 
 @interface WAInstantVoiceBubbleView : WABubbleView
@@ -49,8 +49,8 @@
 @end
 
 @interface WALargeMediaMessageCell : WAMessageCell
-@property (nonatomic,readonly) UIImageView * lowerRightShadowView;
-@property (nonatomic,readonly) WAMessageFooterView * footerView;
+@property (nonatomic,readonly) UIImageView *lowerRightShadowView;
+@property (nonatomic,readonly) WAMessageFooterView *footerView;
 @end
 
 @interface _WANoBlurNavigationBar : UINavigationBar
@@ -60,17 +60,17 @@
 @end
 
 @interface WAChatBar : UIView
-@property (nonatomic,readonly) UIButton * sendButton;
-@property (nonatomic,readonly) UIButton * attachMediaButton;
-@property (nonatomic,readonly) UIButton * cameraButton;
-@property (nonatomic,readonly) UIButton * pttButton;
+@property (nonatomic,readonly) UIButton *sendButton;
+@property (nonatomic,readonly) UIButton *attachMediaButton;
+@property (nonatomic,readonly) UIButton *cameraButton;
+@property (nonatomic,readonly) UIButton *pttButton;
 @end
 
 @interface WATabBarController : UITabBarController
 @end
 
 @interface ContactsViewController
-@property (nonatomic,retain) UITableView * tableView;
+@property (nonatomic,retain) UITableView *tableView;
 @end
 
 @interface ContactTableViewCell : UITableViewCell
@@ -89,7 +89,7 @@
 @end
 
 @interface WhatsAppAppDelegate : NSObject
-@property (nonatomic,retain) UIWindow * window;
+@property (nonatomic,retain) UIWindow *window;
 @end
 
 // New
@@ -97,11 +97,11 @@
 @end
 
 @interface WAMessageContainerView : UIView {
-  _WANoHighlightImageView* _bubbleImageView;
-  NSArray* _sliceViews;
+  _WANoHighlightImageView*_bubbleImageView;
+  NSArray*_sliceViews;
 }
-@property (nonatomic,readonly) WAChatCellData * cellData;
-@property (nonatomic,readonly) NSArray * sliceViews;
+@property (nonatomic,readonly) WAChatCellData *cellData;
+@property (nonatomic,readonly) NSArray *sliceViews;
 - (id)audioSliceView;
 - (void)reloadSliceViews;
 - (void)reloadSlicesIfNeeded;
@@ -110,8 +110,16 @@
 @interface WAAutoCropImageView : UIImageView
 @end
 
+@interface WAMessage
+@property (assign,nonatomic) BOOL isFromMe;
+@property (nonatomic,readonly) BOOL canBeForwarded;
+@property (nonatomic,readonly) unsigned long long footerStatus;
+- (NSAttributedString *)footerAttributedText;
+- (NSAttributedString *)attributedText;
+@end
+
 @interface WAMessageContainerSlice : NSObject
-@property (nonatomic,copy,readonly) NSArray * links;
+@property (nonatomic,copy,readonly) NSArray *links;
 @end
 
 @interface WAMessageSenderNameSlice : WAMessageContainerSlice {
@@ -121,24 +129,21 @@
 @end
 
 @interface WAMessageAttributedTextSlice : WAMessageContainerSlice {
-  NSTextStorage* _textStorage;
-  NSLock* _textObjectsLock;
+  NSTextStorage *_textStorage;
+  NSLock *_textObjectsLock;
 }
-@property (nonatomic,copy,readonly) NSArray * links;
+@property (nonatomic,copy,readonly) NSArray *links;
 @end
 
-@interface WAMessageAttributedTextSliceView
-@property (nonatomic,readonly) WAMessageAttributedTextSlice * slice;
+@interface WAMessageContainerSliceView
+@property (nonatomic,readonly) WAMessage *message;
+@property (nonatomic,readonly) WAChatCellData *cellData;
+@end
+
+@interface WAMessageAttributedTextSliceView : WAMessageContainerSliceView
+@property (nonatomic,readonly) WAMessageAttributedTextSlice *slice;
 @end
 
 @interface WAMessageAttributedTextSliceLink : NSObject
 @property (nonatomic,copy) NSString *text;
-@end
-
-@interface WAMessage
-@property (assign,nonatomic) BOOL isFromMe;
-@property (nonatomic,readonly) BOOL canBeForwarded;
-@property (nonatomic,readonly) unsigned long long footerStatus;
-- (NSAttributedString *)footerAttributedText;
-- (NSAttributedString *)attributedText;
 @end
