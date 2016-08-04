@@ -688,6 +688,9 @@
               [textStorage addAttribute:NSForegroundColorAttributeName
                                   value:LCPParseColorString(yourURLTextColor, @"#1184FB")
                                   range:subStringRange];
+              [textStorage addAttribute:NSUnderlineColorAttributeName
+                                  value:LCPParseColorString(yourURLTextColor, @"#1184FB")
+                                  range:subStringRange];
           }];
     }
   } else {
@@ -701,6 +704,9 @@
           ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
               NSRange subStringRange = [result rangeAtIndex:1];
               [textStorage addAttribute:NSForegroundColorAttributeName
+                                  value:LCPParseColorString(otherPersonURLTextColor, @"#1184FB")
+                                  range:subStringRange];
+              [textStorage addAttribute:NSUnderlineColorAttributeName
                                   value:LCPParseColorString(otherPersonURLTextColor, @"#1184FB")
                                   range:subStringRange];
           }];
