@@ -499,15 +499,17 @@
 ***************************************** New WhatsApp ********************************************
 ***************************************************************************************************/
 
-// TODO : Fix image's corners not rounded
 %hook WAMessageMediaSliceView
 - (WAAutoCropImageView *)imageView {
   NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (%orig && enabledWhatsAppCustomizer) {
     UIImageView *roundedCornersImageView = MSHookIvar<UIImageView *>(self, "_roundedCornersImageView");
-    roundedCornersImageView.layer.cornerRadius = 5;
-    roundedCornersImageView.layer.masksToBounds = YES;
+    roundedCornersImageView.hidden = YES;
+
+    UIView *containerView = MSHookIvar<UIView *>(self, "_containerView");
+    containerView.layer.cornerRadius = 5;
+    containerView.layer.masksToBounds = YES;
   }
   return %orig;
 }
