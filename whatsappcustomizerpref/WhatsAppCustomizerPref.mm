@@ -1,5 +1,6 @@
 #import "common.h"
 #import <libcolorpicker.h>
+#import <notify.h>
 
 #define SETTINGS_FILE @"/var/mobile/Library/Preferences/com.fidele007.whatsappcustomizerpref.plist"
 
@@ -25,10 +26,10 @@
   if(_specifiers == nil) {
     _specifiers = [[self loadSpecifiersFromPlistName:@"WhatsAppCustomizerPref" target:self] retain];
 
-    UIBarButtonItem *saveChangesButton = [[UIBarButtonItem alloc] 
-                                            initWithTitle:@"Save" 
-                                                    style:UIBarButtonItemStylePlain 
-                                                   target:self 
+    UIBarButtonItem *saveChangesButton = [[UIBarButtonItem alloc]
+                                            initWithTitle:@"Save"
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
                                                    action:@selector(saveChangesButtonClicked:)];
 
     [[self navigationItem] setRightBarButtonItem:saveChangesButton animated:YES];
@@ -41,7 +42,7 @@
   [super viewWillAppear:animated];
   _settingsView = [[UIApplication sharedApplication] keyWindow];
   _settingsView.tintColor = [UIColor cyanColor];
-  self.navigationController.navigationController.navigationBar.barTintColor = [UIColor 
+  self.navigationController.navigationController.navigationBar.barTintColor = [UIColor
       colorWithRed:0.031 green:0.467 blue:0.482 alpha:1];
 }
 
@@ -55,10 +56,11 @@
 - (void)saveChangesButtonClicked:(id)sender {
   [self.view endEditing:YES];
   system("killall -9 WhatsApp");
-  UIAlertView *savedAlert = [[UIAlertView alloc] initWithTitle:@"Settings" 
-                                                       message:@"Your settings have been saved." 
-                                                      delegate:self 
-                                             cancelButtonTitle:@"OK" 
+  // notify_post("com.fidele007.WhatsAppCustomizer/handleSettingsChanged");
+  UIAlertView *savedAlert = [[UIAlertView alloc] initWithTitle:@"Settings"
+                                                       message:@"Your settings have been saved."
+                                                      delegate:self
+                                             cancelButtonTitle:@"OK"
                                              otherButtonTitles:nil, nil];
   [savedAlert show];
   [savedAlert release];
@@ -117,14 +119,14 @@
   [settings setObject:@"#007CFF:1" forKey:@"toolbarItemColor"];
 
   [settings setObject:@"" forKey:@"chatFontSize"];
-  
+
   if ([settings writeToFile:SETTINGS_FILE atomically:YES]) {
     [self reloadSpecifiers];
     system("killall -9 WhatsApp");
-    UIAlertView *resetAlert = [[UIAlertView alloc] initWithTitle:@"Settings" 
-                                                         message:@"Your settings have been reset to defaults." 
-                                                        delegate:self 
-                                               cancelButtonTitle:@"OK" 
+    UIAlertView *resetAlert = [[UIAlertView alloc] initWithTitle:@"Settings"
+                                                         message:@"Your settings have been reset to defaults."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil, nil];
     [resetAlert show];
     [resetAlert release];
@@ -189,7 +191,7 @@
   self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell" specifier:specifier];
   if (self) {
     int width = [[UIScreen mainScreen] bounds].size.width;
-    
+
     // Create hidden label
     CGRect hiddenFrame = CGRectMake(0, -700, width, 705);
     _hiddenLabel = [[UILabel alloc] initWithFrame:hiddenFrame];

@@ -3,6 +3,20 @@
 
 #define SETTINGS_FILE @"/var/mobile/Library/Preferences/com.fidele007.whatsappcustomizerpref.plist"
 
+/*
+static void handleSettingsChanged() {
+  HBLogDebug(@"WhatsAppCustomizer settings changed: %@", [%c(WAApplication) sharedApplication]);
+  [[%c(WAApplication) wa_delegate] resetViewControllers];
+  NSArray *windows = [%c(WAApplication) sharedApplication].windows;
+  for (UIWindow *window in windows) {
+    for (UIView *view in window.subviews) {
+      [view removeFromSuperview];
+      [window addSubview:view];
+    }
+  }
+}
+*/
+
 %hook WhatsAppAppDelegate
 - (void)setWindow:(UIWindow *)arg1 {
   %orig;
@@ -13,6 +27,18 @@
     self.window.tintColor = LCPParseColorString(tintColor, @"#007CFF");
   }
 }
+
+/*
+- (id)init {
+  CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
+                                  NULL,
+                                  (CFNotificationCallback)handleSettingsChanged,
+                                  CFSTR("com.fidele007.WhatsAppCustomizer/handleSettingsChanged"),
+                                  NULL,
+                                  CFNotificationSuspensionBehaviorDeliverImmediately);
+  return %orig;
+}
+*/
 %end
 
 %hook UIStatusBarNewUIStyleAttributes
@@ -665,6 +691,25 @@
 }
 %end
 
+static NSString *getRegexPattern(NSString *link) {
+  NSString *formattedPattern;
+  formattedPattern = [link stringByReplacingOccurrencesOfString:@"/" withString:@"\\/"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"[" withString:@"\\["];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"^" withString:@"\\^"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"$" withString:@"\\$"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"." withString:@"\\."];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"|" withString:@"\\|"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"?" withString:@"\\?"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"*" withString:@"\\*"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"+" withString:@"\\+"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"(" withString:@"\\("];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@")" withString:@"\\)"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"{" withString:@"\\{"];
+  formattedPattern = [formattedPattern stringByReplacingOccurrencesOfString:@"}" withString:@"\\}"];
+  formattedPattern = [NSString stringWithFormat:@"(%@)", formattedPattern];
+  return formattedPattern;
+}
+
 // URL Colors
 %hook WAMessageAttributedTextSliceView
 - (void)reloadSliceAfterChange:(unsigned long long)arg1 {
@@ -680,13 +725,20 @@
   if (self.cellData.isFromMe) {
     NSString *yourURLTextColor = settings[@"yourURLTextColor"];
     for (WAMessageAttributedTextSliceLink *link in self.slice.links) {
-      NSString *pattern = [NSString stringWithFormat:@"(%@)", link.text];
+      NSString *pattern = getRegexPattern(link.text);
+      NSError *err = nil;
       NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern
                                                                              options:kNilOptions
-                                                                               error:nil];
+                                                                               error:&err];
+      if (!regex) {
+        [NSException raise:@"badRegularExpression"
+                    format:@"The regular expression was incorrectly constructed. Error was: %@", err];
+      }
       [regex enumerateMatchesInString:textStorage.string options:kNilOptions range:range usingBlock:
           ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
               NSRange subStringRange = [result rangeAtIndex:1];
+              [textStorage removeAttribute:NSForegroundColorAttributeName range:subStringRange];
+              [textStorage removeAttribute:NSUnderlineColorAttributeName range:subStringRange];
               [textStorage addAttribute:NSForegroundColorAttributeName
                                   value:LCPParseColorString(yourURLTextColor, @"#1184FB")
                                   range:subStringRange];
@@ -698,13 +750,20 @@
   } else {
     NSString *otherPersonURLTextColor = settings[@"otherPersonURLTextColor"];
     for (WAMessageAttributedTextSliceLink *link in self.slice.links) {
-      NSString *pattern = [NSString stringWithFormat:@"(%@)", link.text];
+      NSString *pattern = getRegexPattern(link.text);
+      NSError *err = nil;
       NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern
                                                                              options:kNilOptions
-                                                                               error:nil];
+                                                                               error:&err];
+      if (!regex) {
+        [NSException raise:@"badRegularExpression"
+                    format:@"The regular expression was incorrectly constructed. Error was: %@", err];
+      }
       [regex enumerateMatchesInString:textStorage.string options:kNilOptions range:range usingBlock:
           ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
               NSRange subStringRange = [result rangeAtIndex:1];
+              [textStorage removeAttribute:NSForegroundColorAttributeName range:subStringRange];
+              [textStorage removeAttribute:NSUnderlineColorAttributeName range:subStringRange];
               [textStorage addAttribute:NSForegroundColorAttributeName
                                   value:LCPParseColorString(otherPersonURLTextColor, @"#1184FB")
                                   range:subStringRange];

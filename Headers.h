@@ -90,6 +90,7 @@
 
 @interface WhatsAppAppDelegate : NSObject
 @property (nonatomic,retain) UIWindow *window;
+- (void)resetViewControllers;
 @end
 
 // New
@@ -146,4 +147,8 @@
 
 @interface WAMessageAttributedTextSliceLink : NSObject
 @property (nonatomic,copy) NSString *text;
+@end
+
+@interface WAApplication : UIApplication
++ (WhatsAppAppDelegate *)wa_delegate;
 @end
