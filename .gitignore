@@ -3,3 +3,5 @@ theos
 *.deb
 obj/
 _/
+WhatsAppCustomizer.sublime-project
+WhatsAppCustomizer.sublime-workspace
