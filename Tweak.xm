@@ -265,7 +265,30 @@ static void handleSettingsChanged() {
 }
 %end
 
+// Set date bubble view and date label color
+%hook WADateBubbleView
+- (void)layoutSubviews {
+  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
+  if (enabledWhatsAppCustomizer) {
+    // Set date bubble color
+    UIImageView *bubbleImageView = MSHookIvar<UIImageView *>(self, "_backgroundView");
+    bubbleImageView.image = [bubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    NSString *dateBubbleColor = settings[@"dateBubbleColor"];
+    bubbleImageView.tintColor = LCPParseColorString(dateBubbleColor, @"#D7DCF0");
+
+    // Set date label color
+    UILabel *dateLabel = MSHookIvar<UILabel *>(self, "_titleLabel");
+    NSString *dateLabelColor = settings[@"dateLabelColor"];
+    dateLabel.textColor = LCPParseColorString(dateLabelColor, @"#000000");
+  }
+
+  %orig;
+}
+%end
+
 // Text bubble color (Deprecated)
+%group OldWhatsApp
 %hook WAMessageCell
 - (UIImageView *)bubbleImageView {
   NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
@@ -400,28 +423,6 @@ static void handleSettingsChanged() {
 }
 %end
 
-// Set date bubble view and date label color
-%hook WADateBubbleView
-- (void)layoutSubviews {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
-  BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
-  if (enabledWhatsAppCustomizer) {
-    // Set date bubble color
-    UIImageView *bubbleImageView = MSHookIvar<UIImageView *>(self, "_backgroundView");
-    bubbleImageView.image = [bubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    NSString *dateBubbleColor = settings[@"dateBubbleColor"];
-    bubbleImageView.tintColor = LCPParseColorString(dateBubbleColor, @"#D7DCF0");
-
-    // Set date label color
-    UILabel *dateLabel = MSHookIvar<UILabel *>(self, "_titleLabel");
-    NSString *dateLabelColor = settings[@"dateLabelColor"];
-    dateLabel.textColor = LCPParseColorString(dateLabelColor, @"#000000");
-  }
-
-  %orig;
-}
-%end
-
 %hook WAMessageFooterView
 - (id)statusImage {
   NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
@@ -520,11 +521,12 @@ static void handleSettingsChanged() {
   return %orig;
 }
 %end
-
+%end
 /**************************************************************************************************
 ***************************************** New WhatsApp ********************************************
 ***************************************************************************************************/
 
+%group NewWhatsApp
 %hook WAMessageMediaSliceView
 - (WAAutoCropImageView *)imageView {
   NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
@@ -775,3 +777,20 @@ static NSString *getRegexPattern(NSString *link) {
   }
 }
 %end
+%end
+
+%ctor {
+  %init();
+
+  NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+  NSString *newVersion = @"2.16.7";
+  // HBLogDebug(@"Current WhatsApp version: %@", currentVersion);
+
+  if ([currentVersion compare:newVersion options:NSNumericSearch] == NSOrderedAscending) {
+    // currentVersion < newVersion
+    %init(OldWhatsApp);
+  } else {
+    // currentVersion >= newVersion
+    %init(NewWhatsApp);
+  }
+}
