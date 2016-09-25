@@ -97,26 +97,27 @@
 @interface _WANoHighlightImageView : UIImageView
 @end
 
-@interface WAMessageContainerView : UIView {
-  _WANoHighlightImageView*_bubbleImageView;
-  NSArray*_sliceViews;
-}
-@property (nonatomic,readonly) WAChatCellData *cellData;
-@property (nonatomic,readonly) NSArray *sliceViews;
-- (id)audioSliceView;
-- (void)reloadSliceViews;
-- (void)reloadSlicesIfNeeded;
-@end
-
-@interface WAAutoCropImageView : UIImageView
-@end
-
 @interface WAMessage
 @property (assign,nonatomic) BOOL isFromMe;
 @property (nonatomic,readonly) BOOL canBeForwarded;
 @property (nonatomic,readonly) unsigned long long footerStatus;
 - (NSAttributedString *)footerAttributedText;
 - (NSAttributedString *)attributedText;
+@end
+
+@interface WAMessageContainerView : UIView {
+  _WANoHighlightImageView*_bubbleImageView;
+  NSArray*_sliceViews;
+}
+@property (nonatomic,readonly) WAChatCellData *cellData;
+@property (nonatomic,readonly) NSArray *sliceViews;
+@property (nonatomic,readonly) WAMessage * message;
+- (id)audioSliceView;
+- (void)reloadSliceViews;
+- (void)reloadSlicesIfNeeded;
+@end
+
+@interface WAAutoCropImageView : UIImageView
 @end
 
 @interface WAMessageContainerSlice : NSObject

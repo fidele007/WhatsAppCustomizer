@@ -554,15 +554,15 @@ static void handleSettingsChanged() {
     return;
   }
 
-  WAChatCellData *cellData = self.cellData;
-  if (!cellData) {
+  WAMessage *message = self.message;
+  if (!message) {
     return;
   }
 
   _WANoHighlightImageView *customBubbleImageView = MSHookIvar<_WANoHighlightImageView *>(self, "_bubbleImageView");
   customBubbleImageView.image = [customBubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
-  if (cellData.isFromMe) {
+  if (message.isFromMe) {
     if ([self audioSliceView]) {
       NSString *yourInstantVoiceBubbleColor = settings[@"yourInstantVoiceBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(yourInstantVoiceBubbleColor, @"#DCF8C6");
@@ -570,7 +570,7 @@ static void handleSettingsChanged() {
       NSString *yourBubbleColor = settings[@"yourBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(yourBubbleColor, @"#DCF8C6");
     }
-  } else if (!self.cellData.canBeForwarded) {
+  } else if (!message.canBeForwarded) {
       NSString *eventTextBubbleColor = settings[@"eventTextBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(eventTextBubbleColor, @"#D0E9FB");
   } else {
@@ -639,7 +639,7 @@ static void handleSettingsChanged() {
 
   WAMessageSenderNameSlice *senderNameSlice = %orig;
   if (!senderNameSlice) {
-      return %orig;
+    return %orig;
   }
 
   NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(senderNameSlice, "_senderNameTextStorage");
@@ -722,9 +722,14 @@ static NSString *getRegexPattern(NSString *link) {
     return;
   }
 
+  if (!self.message) {
+    return;
+  }
+  WAMessage *message = self.message;
+
   NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(self.slice, "_textStorage");
   NSRange range = NSMakeRange(0, [textStorage length]);
-  if (self.cellData.isFromMe) {
+  if (message.isFromMe) {
     NSString *yourURLTextColor = settings[@"yourURLTextColor"];
     for (WAMessageAttributedTextSliceLink *link in self.slice.links) {
       NSString *pattern = getRegexPattern(link.text);
@@ -784,7 +789,6 @@ static NSString *getRegexPattern(NSString *link) {
 
   NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
   NSString *newVersion = @"2.16.7";
-  // HBLogDebug(@"Current WhatsApp version: %@", currentVersion);
 
   if ([currentVersion compare:newVersion options:NSNumericSearch] == NSOrderedAscending) {
     // currentVersion < newVersion
