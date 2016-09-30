@@ -207,7 +207,7 @@
     CGRect botFrame = CGRectMake(0,35,width, 60);
 
     _label = [[UILabel alloc] initWithFrame:frame];
-    [_label setLineBreakMode:UILineBreakModeWordWrap];
+    [_label setLineBreakMode:NSLineBreakByWordWrapping];
     [_label setNumberOfLines:1];
     [_label setText:@"WhatsAppCustomizer"];
     [_label setBackgroundColor:[UIColor colorWithRed:0.043 green:0.651 blue:0.671 alpha:1]];
