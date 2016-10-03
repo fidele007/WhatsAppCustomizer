@@ -1,7 +1,7 @@
 Package: com.fidele007.whatsappcustomizer
 Name: WhatsAppCustomizer
 Depends: mobilesubstrate
-Version: 1.3.2
+Version: 1.3.4
 Architecture: iphoneos-arm
 Description: Make WhatsApp colorful.
 Depiction: https://fidele007.github.io/depictions/?p=com.fidele007.whatsappcustomizer
