@@ -1,6 +1,6 @@
 ARCHS = armv7 arm64
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = WhatsAppCustomizerPref
 WhatsAppCustomizerPref_FILES = WhatsAppCustomizerPref.mm
