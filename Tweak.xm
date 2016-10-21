@@ -637,20 +637,41 @@ static void handleSettingsChanged() {
     return %orig;
   }
 
+  NSString *senderLabelColor = settings[@"senderLabelColor"];
   WAMessageSenderNameSlice *senderNameSlice = %orig;
-  if (!senderNameSlice) {
-    return %orig;
+  NSTextStorage *textStorage;
+  object_getInstanceVariable(senderNameSlice, "_senderNameTextStorage", (void **)&textStorage);
+
+  if (textStorage) {
+    // For WhatsApp v2.16.11 and lower
+    NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(senderNameSlice, "_senderNameTextStorage");
+    NSRange range = NSMakeRange(0, [textStorage length]);
+    [textStorage removeAttribute:NSForegroundColorAttributeName range:range];
+    [textStorage addAttribute:NSForegroundColorAttributeName
+                        value:LCPParseColorString(senderLabelColor, @"#32948A")
+                        range:range];
+  } else {
+    // For WhatsApp v2.16.12 and higher
+    WAMessageSenderNameSliceRenderer *renderer;
+    object_getInstanceVariable(senderNameSlice, "_renderer", (void **)&renderer);
+    if (!renderer) {
+      goto rtrn;
+    }
+
+    NSTextStorage* senderNameTextStorage;
+    object_getInstanceVariable(renderer, "_senderNameTextStorage", (void **)&senderNameTextStorage);
+    if (!senderNameTextStorage) {
+      goto rtrn;
+    }
+
+    NSRange range = NSMakeRange(0, [senderNameTextStorage length]);
+    [senderNameTextStorage removeAttribute:NSForegroundColorAttributeName range:range];
+    [senderNameTextStorage addAttribute:NSForegroundColorAttributeName
+                                  value:LCPParseColorString(senderLabelColor, @"#32948A")
+                                  range:range];
   }
 
-  NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(senderNameSlice, "_senderNameTextStorage");
-  NSString *senderLabelColor = settings[@"senderLabelColor"];
-  NSRange range = NSMakeRange(0, [textStorage length]);
-  [textStorage removeAttribute:NSForegroundColorAttributeName range:range];
-  [textStorage addAttribute:NSForegroundColorAttributeName
-                      value:LCPParseColorString(senderLabelColor, @"#32948A")
-                      range:range];
-
-  return senderNameSlice;
+  rtrn: return senderNameSlice;
 }
 %end
 

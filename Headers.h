@@ -124,8 +124,16 @@
 @property (nonatomic,copy,readonly) NSArray *links;
 @end
 
+@interface WAMessageSenderNameSliceRenderer : NSObject {
+  NSTextStorage* _senderNameTextStorage;
+}
+@end
+
 @interface WAMessageSenderNameSlice : WAMessageContainerSlice {
-    NSTextStorage *_senderNameTextStorage;
+  // WhatsApp v2.16.11 and lower
+  NSTextStorage *_senderNameTextStorage;
+  // WhatsApp v2.16.12 and higher
+  WAMessageSenderNameSliceRenderer* _renderer;
 }
 -(id)initWithMessage:(id)arg1 metrics:(id)arg2 ;
 @end
