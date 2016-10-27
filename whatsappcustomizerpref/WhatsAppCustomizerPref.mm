@@ -1,5 +1,4 @@
 #import "common.h"
-#import <libcolorpicker.h>
 #import <notify.h>
 
 #define SETTINGS_FILE @"/var/mobile/Library/Preferences/com.fidele007.whatsappcustomizerpref.plist"
