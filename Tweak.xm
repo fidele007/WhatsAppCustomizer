@@ -231,7 +231,9 @@ static void handleSettingsChanged() {
     // set toolbar background color
     NSString *toolbarBackgroundColor = settings[@"toolbarBackgroundColor"];
     UIToolbar *chatToolBar = (UIToolbar *)MSHookIvar<UIView *>(self, "_backgroundView");
-    chatToolBar.barTintColor = LCPParseColorString(toolbarBackgroundColor, @"#F7F7F7");
+    UIColor *toolbarBGColor = LCPParseColorString(toolbarBackgroundColor, @"#F7F7F7");
+    chatToolBar.barTintColor = toolbarBGColor;
+    chatToolBar.alpha = [toolbarBGColor alpha];
     // Set toolbar items color
     NSString *toolbarItemColor = settings[@"toolbarItemColor"];
     self.attachMediaButton.tintColor = LCPParseColorString(toolbarItemColor, @"#007CFF");
