@@ -20,7 +20,7 @@ static void handleSettingsChanged() {
 %hook WhatsAppAppDelegate
 - (void)setWindow:(UIWindow *)arg1 {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     NSString *tintColor = settings[@"tintColor"];
@@ -43,7 +43,7 @@ static void handleSettingsChanged() {
 
 %hook UIStatusBarNewUIStyleAttributes
 - (id)initWithRequest:(id)arg1 backgroundColor:(id)arg2 foregroundColor:(id)arg3 {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     NSString *statusBarBackgroundColor = settings[@"statusBarBackgroundColor"];
@@ -64,7 +64,7 @@ static void handleSettingsChanged() {
 %hook WATheme
 // Set font size in Chat
 - (void)setFontSize:(double)arg1 {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     if ([settings[@"chatFontSize"] doubleValue]) {
@@ -75,7 +75,7 @@ static void handleSettingsChanged() {
 }
 
 - (UIColor *)tintColor {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     NSString *tintColor = settings[@"tintColor"];
@@ -88,7 +88,7 @@ static void handleSettingsChanged() {
 %hook ContactsViewController
 - (void)viewWillAppear:(BOOL)arg1 {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer && self.tableView) {
     NSString *tintColor = settings[@"tintColor"];
@@ -100,7 +100,7 @@ static void handleSettingsChanged() {
 %hook ContactTableViewCell
 - (void)layoutSubviews {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     NSString *tintColor = settings[@"tintColor"];
@@ -112,7 +112,7 @@ static void handleSettingsChanged() {
 %hook WAContactInfoTableViewCell
 - (void)layoutSubviews {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     NSString *tintColor = settings[@"tintColor"];
@@ -121,7 +121,7 @@ static void handleSettingsChanged() {
 }
 - (UILabel *)valueLabel {
   if (%orig) {
-    NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+    NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
     BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
     if (enabledWhatsAppCustomizer) {
       NSString *tintColor = settings[@"tintColor"];
@@ -139,7 +139,7 @@ static void handleSettingsChanged() {
 %hook _WANoBlurNavigationBar
 - (void)layoutSubviews {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     // Set navigation bar tint color
@@ -160,7 +160,7 @@ static void handleSettingsChanged() {
 %hook WATabBarController
 - (void)viewWillAppear:(BOOL)arg1 {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (self.tabBar && enabledWhatsAppCustomizer) {
     NSString *tintColor = settings[@"tintColor"];
@@ -172,7 +172,7 @@ static void handleSettingsChanged() {
 // Tint all buttons
 %hook WAChatListHeaderCell
 - (UIButton *)broadcastButton {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (%orig && enabledWhatsAppCustomizer) {
     NSString *tintColor = settings[@"tintColor"];
@@ -183,7 +183,7 @@ static void handleSettingsChanged() {
   return %orig;
 }
 - (UIButton *)groupButton {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (%orig && enabledWhatsAppCustomizer) {
     NSString *tintColor = settings[@"tintColor"];
@@ -198,7 +198,7 @@ static void handleSettingsChanged() {
 // Set title and caption label color
 %hook WAConversationHeaderView
 - (WALabel *)titleLabel {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (%orig && enabledWhatsAppCustomizer) {
     NSString *navbarTitleColor = settings[@"navbarTitleColor"];
@@ -210,7 +210,7 @@ static void handleSettingsChanged() {
 }
 
 - (UILabel *)captionLabel {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (%orig && enabledWhatsAppCustomizer) {
     NSString *navbarTitleColor = settings[@"navbarTitleColor"];
@@ -225,7 +225,7 @@ static void handleSettingsChanged() {
 %hook WAChatBar
 - (void)layoutSubviews {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     // set toolbar background color
@@ -254,7 +254,7 @@ static void handleSettingsChanged() {
 %hook WAAnimatedCancelLabel
 - (void)layoutSubviews {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     NSString *toolbarItemColor = settings[@"toolbarItemColor"];
@@ -270,7 +270,7 @@ static void handleSettingsChanged() {
 // Set date bubble view and date label color
 %hook WADateBubbleView
 - (void)layoutSubviews {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     // Set date bubble color
@@ -293,7 +293,7 @@ static void handleSettingsChanged() {
 %group OldWhatsApp
 %hook WAMessageCell
 - (UIImageView *)bubbleImageView {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     UIImageView *customBubbleImageView = %orig;
@@ -324,7 +324,7 @@ static void handleSettingsChanged() {
 
 // WAInstantVoiceBubbleView
 - (UIView *)bubbleView {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     // Get instance voice bubble image
@@ -362,7 +362,7 @@ static void handleSettingsChanged() {
 
 // Timestamp color
 - (WAMessageFooterView *)footerView {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     if (%orig) {
@@ -383,7 +383,7 @@ static void handleSettingsChanged() {
 
 // Sender label color
 - (UILabel *)fromNameLabel {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     if (%orig) {
@@ -400,7 +400,7 @@ static void handleSettingsChanged() {
 // Message text color
 %hook WAChatCellData
 - (NSArray *)textMessages {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     NSArray *textMessageArray = [%orig mutableCopy];
@@ -427,7 +427,7 @@ static void handleSettingsChanged() {
 
 %hook WAMessageFooterView
 - (id)statusImage {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     UIImageView *statusImageView = MSHookIvar<UIImageView *>(self, "_statusImageView");
@@ -447,7 +447,7 @@ static void handleSettingsChanged() {
 %hook WATextMessageCell
 - (void)layoutSubviews {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     WAMessageTextView *messageTextView = MSHookIvar<WAMessageTextView *>(self, "_messageTextView");
@@ -466,7 +466,7 @@ static void handleSettingsChanged() {
 
 %hook WAGroupEventMessageCell
 - (void)layoutSubviews {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     WALabel *eventTextLabel = MSHookIvar<WALabel *>(self, "_eventTextLabel");
@@ -482,7 +482,7 @@ static void handleSettingsChanged() {
 %hook WALargeMediaMessageCell
 - (void)layoutSubviews {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (enabledWhatsAppCustomizer) {
     // Hide _roundedCornersImageView
@@ -512,7 +512,7 @@ static void handleSettingsChanged() {
 // Rounded corners of image
 %hook WAMediaDataPresentationController
 - (UIView *)view {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (%orig && enabledWhatsAppCustomizer) {
     UIView *imageView = %orig;
@@ -531,7 +531,7 @@ static void handleSettingsChanged() {
 %group NewWhatsApp
 %hook WAMessageMediaSliceView
 - (WAAutoCropImageView *)imageView {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (%orig && enabledWhatsAppCustomizer) {
     UIImageView *roundedCornersImageView = MSHookIvar<UIImageView *>(self, "_roundedCornersImageView");
@@ -550,7 +550,7 @@ static void handleSettingsChanged() {
 - (void)updateBubbleImageView {
   %orig;
 
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (!enabledWhatsAppCustomizer) {
     return;
@@ -590,7 +590,7 @@ static void handleSettingsChanged() {
 // Footer status colors
 %hook WAMessageStatusSlice
 - (NSAttributedString *)attributedStringForMessage:(id)arg1 {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (!enabledWhatsAppCustomizer || ![arg1 isKindOfClass:%c(WAMessage)]) {
     return %orig;
@@ -633,7 +633,7 @@ static void handleSettingsChanged() {
 // Sender name label color
 %hook WAMessageSenderNameSlice
 - (WAMessageSenderNameSlice *)initWithMessage:(id)arg1 metrics:(id)arg2 {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (!enabledWhatsAppCustomizer) {
     return %orig;
@@ -680,7 +680,7 @@ static void handleSettingsChanged() {
 // Message text colors
 %hook WAMessage
 - (NSAttributedString *)attributedText {
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (!enabledWhatsAppCustomizer) {
     return %orig;
@@ -739,7 +739,7 @@ static NSString *getRegexPattern(NSString *link) {
 %hook WAMessageAttributedTextSliceView
 - (void)reloadSliceAfterChange:(unsigned long long)arg1 {
   %orig;
-  NSDictionary *settings = [[NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE] autorelease];
+  NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:SETTINGS_FILE];
   BOOL enabledWhatsAppCustomizer = [settings[@"enabledWhatsAppCustomizer"] boolValue];
   if (!enabledWhatsAppCustomizer || [self.slice.links count] == 0) {
     return;
