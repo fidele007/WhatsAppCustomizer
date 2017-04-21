@@ -14,11 +14,20 @@
 @interface _TextMessage_TextKit : TextMessage
 @end
 
+@interface WAMessage
+@property (assign,nonatomic) BOOL isFromMe;
+@property (nonatomic,readonly) BOOL canBeForwarded;
+@property (nonatomic,readonly) unsigned long long footerStatus;
+- (NSAttributedString *)footerAttributedText;
+- (NSAttributedString *)attributedText;
+@end
+
 @interface WAChatCellData : NSObject
 @property (nonatomic,readonly) BOOL canBeForwarded;
 @property (nonatomic,readonly) BOOL isFromMe;
 @property (nonatomic,retain) NSArray *textMessages;
 @property (nonatomic,readonly) unsigned long long footerStatus;
+@property (nonatomic,readonly) WAMessage *message;
 @end
 
 @interface WAMessageCell : UITableViewCell
@@ -97,14 +106,6 @@
 @interface _WANoHighlightImageView : UIImageView
 @end
 
-@interface WAMessage
-@property (assign,nonatomic) BOOL isFromMe;
-@property (nonatomic,readonly) BOOL canBeForwarded;
-@property (nonatomic,readonly) unsigned long long footerStatus;
-- (NSAttributedString *)footerAttributedText;
-- (NSAttributedString *)attributedText;
-@end
-
 @interface WAMessageContainerView : UIView {
   _WANoHighlightImageView*_bubbleImageView;
   NSArray*_sliceViews;
@@ -145,7 +146,7 @@
 @property (nonatomic,copy,readonly) NSArray *links;
 @end
 
-@interface WAMessageContainerSliceView
+@interface WAMessageContainerSliceView : UIView
 @property (nonatomic,readonly) WAMessage *message;
 @property (nonatomic,readonly) WAChatCellData *cellData;
 @end

@@ -556,16 +556,23 @@ static void handleSettingsChanged() {
     return;
   }
 
-  WAMessage *message = self.message;
-  if (!message) {
+  WAMessage *message = nil;
+  if ([self respondsToSelector:@selector(message)]) {
+    message = self.message;
+  } else if ([self respondsToSelector:@selector(cellData)]) {
+    message = self.cellData.message;
+  }
+
+  _WANoHighlightImageView *customBubbleImageView;
+  object_getInstanceVariable(self, "_bubbleImageView", (void **)&customBubbleImageView);
+  if (!customBubbleImageView) {
     return;
   }
 
-  _WANoHighlightImageView *customBubbleImageView = MSHookIvar<_WANoHighlightImageView *>(self, "_bubbleImageView");
   customBubbleImageView.image = [customBubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
-  if (message.isFromMe) {
-    if ([self audioSliceView]) {
+  if ([self respondsToSelector:@selector(isFromMe)] && message.isFromMe) {
+    if ([self respondsToSelector:@selector(audioSliceView)] && [self audioSliceView]) {
       NSString *yourInstantVoiceBubbleColor = settings[@"yourInstantVoiceBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(yourInstantVoiceBubbleColor, @"#DCF8C6");
     } else {
@@ -576,7 +583,7 @@ static void handleSettingsChanged() {
       NSString *eventTextBubbleColor = settings[@"eventTextBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(eventTextBubbleColor, @"#D0E9FB");
   } else {
-    if ([self audioSliceView]) {
+    if ([self respondsToSelector:@selector(audioSliceView)] && [self audioSliceView]) {
       NSString *otherPersonInstantVoiceBubbleColor = settings[@"otherPersonInstantVoiceBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(otherPersonInstantVoiceBubbleColor, @"#FAFAFA");
     } else {
@@ -745,12 +752,19 @@ static NSString *getRegexPattern(NSString *link) {
     return;
   }
 
-  if (!self.message) {
+  WAMessage *message = nil;
+  if ([self respondsToSelector:@selector(message)] && self.message) {
+    message = self.message;
+  } else if ([self respondsToSelector:@selector(cellData)]) {
+    message = self.cellData.message;
+  }
+
+  NSTextStorage *textStorage;
+  object_getInstanceVariable(self.slice, "_textStorage", (void **)&textStorage);
+  if (!textStorage) {
     return;
   }
-  WAMessage *message = self.message;
 
-  NSTextStorage *textStorage = MSHookIvar<NSTextStorage *>(self.slice, "_textStorage");
   NSRange range = NSMakeRange(0, [textStorage length]);
   if (message.isFromMe) {
     NSString *yourURLTextColor = settings[@"yourURLTextColor"];

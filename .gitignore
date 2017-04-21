@@ -4,5 +4,4 @@ theos
 obj/
 _/
 .DS_Store
-WhatsAppCustomizer.sublime-project
-WhatsAppCustomizer.sublime-workspace
+*.sublime-*
