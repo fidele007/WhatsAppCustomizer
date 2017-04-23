@@ -14,7 +14,7 @@
 @interface _TextMessage_TextKit : TextMessage
 @end
 
-@interface WAMessage
+@interface WAMessage : NSObject
 @property (assign,nonatomic) BOOL isFromMe;
 @property (nonatomic,readonly) BOOL canBeForwarded;
 @property (nonatomic,readonly) unsigned long long footerStatus;

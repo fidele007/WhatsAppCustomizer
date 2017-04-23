@@ -571,8 +571,15 @@ static void handleSettingsChanged() {
 
   customBubbleImageView.image = [customBubbleImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
-  if ([self respondsToSelector:@selector(isFromMe)] && message.isFromMe) {
-    if ([self respondsToSelector:@selector(audioSliceView)] && [self audioSliceView]) {
+  BOOL isAudioSliceView = NO;
+  if ([self respondsToSelector:@selector(audioSliceView)]) {
+    isAudioSliceView = [self audioSliceView] != nil;
+  } else if ([self.sliceViews count] > 0) {
+    isAudioSliceView = [self.sliceViews[0] isKindOfClass:%c(WAMessageAudioSliceView)];
+  }
+
+  if (message.isFromMe) {
+    if (isAudioSliceView) {
       NSString *yourInstantVoiceBubbleColor = settings[@"yourInstantVoiceBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(yourInstantVoiceBubbleColor, @"#DCF8C6");
     } else {
@@ -583,7 +590,7 @@ static void handleSettingsChanged() {
       NSString *eventTextBubbleColor = settings[@"eventTextBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(eventTextBubbleColor, @"#D0E9FB");
   } else {
-    if ([self respondsToSelector:@selector(audioSliceView)] && [self audioSliceView]) {
+    if (isAudioSliceView) {
       NSString *otherPersonInstantVoiceBubbleColor = settings[@"otherPersonInstantVoiceBubbleColor"];
       customBubbleImageView.tintColor = LCPParseColorString(otherPersonInstantVoiceBubbleColor, @"#FAFAFA");
     } else {
